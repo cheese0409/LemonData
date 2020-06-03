@@ -3,25 +3,29 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Homepage from "./components/Homepage";
 import Inputpage from "./components/Inputpage";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 import "./app.scss";
 
 function App() {
-    return (
-        <div className="App">
-            <Router>
-                <Header></Header>
-                <Switch>
-                    <Route path="/input" exact>
-                        <Inputpage></Inputpage>
-                    </Route>
-                    <Route path="/" exact>
-                        <Homepage></Homepage>
-                    </Route>
-                </Switch>
-            </Router>
-        </div>
-    );
+	return (
+		<div className="App">
+			<Router>
+				<Header></Header>
+				<Switch>
+					<Route path="/input" exact>
+						<DndProvider backend={HTML5Backend}>
+							<Inputpage></Inputpage>
+						</DndProvider>
+					</Route>
+					<Route path="/" exact>
+						<Homepage></Homepage>
+					</Route>
+				</Switch>
+			</Router>
+		</div>
+	);
 }
 
 export default App;
