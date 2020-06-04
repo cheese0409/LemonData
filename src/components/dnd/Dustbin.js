@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDrop } from "react-dnd";
+import { useDispatch } from "react-redux";
+import rootActions from "../../actions/rootActions";
 
 const style = {
 	height: "2rem",
@@ -7,9 +9,9 @@ const style = {
 	border: "1px solid black"
 };
 
-export const Dustbin = ({ name, lastDroppedItem, onDrop }) => {
+export const Dustbin = ({ name, lastDroppedItem, onDrop, accept }) => {
 	const [{ canDrop, isOver }, drop] = useDrop({
-		accept: "box",
+		accept: accept,
 		drop: onDrop,
 		collect: (monitor) => ({
 			isOver: monitor.isOver(),
@@ -25,7 +27,6 @@ export const Dustbin = ({ name, lastDroppedItem, onDrop }) => {
 
 	return (
 		<div ref={drop} style={{ ...style, backgroundColor }}>
-			{/* {name} */}
 			{lastDroppedItem && <p>{`${lastDroppedItem.name}`}</p>}
 		</div>
 	);

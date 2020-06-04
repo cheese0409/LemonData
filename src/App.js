@@ -1,8 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Header from "./components/Header";
-import Homepage from "./components/Homepage";
-import Inputpage from "./components/Inputpage";
+import Header from "./components/partials/Header";
+import Homepage from "./components/pages/Homepage";
+import Inputpage from "./components/pages/Inputpage";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 

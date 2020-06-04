@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import LoaddataBtn from "./LoaddataBtn";
+import LoaddataBtn from "../LoaddataBtn";
 import { Container, Nav, Row, Col, ListGroup } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import GraphSection from "./GraphSection";
-import Sidebar from "./Sidebar";
-import Uploader from "./Uploader";
-import ChooseGraph from "./ChooseGraph";
+import GraphSection from "../GraphSection";
+import Sidebar from "../Sidebar";
+import Uploader from "../Uploader";
+import ChooseGraph from "../ChooseGraph";
 
 function Inputpage() {
 	const [activeKey, handleSelect] = useState("data");

@@ -6,9 +6,9 @@ const style = {
 	cursor: "move"
 };
 
-export const Box = ({ name, icon }) => {
+export const Box = ({ name, icon, type }) => {
 	const [{ isDragging }, drag] = useDrag({
-		item: { name, type: "box" },
+		item: { name, type },
 		collect: (monitor) => ({
 			isDragging: monitor.isDragging()
 		})
