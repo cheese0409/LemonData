@@ -5,12 +5,23 @@ import { Box } from "./dnd/Box";
 
 function Measure(props) {
 	const { name, rowData, jsonData } = useSelector((state) => state.dataset);
+
 	const detectDatatype = (val) => {
 		if (!isNaN(val)) {
 			return "number";
 		} else if (typeof val === "string") {
 			return "string";
 		}
+	};
+
+	const countStringTypes = (key, total) => {
+		var set = new Set();
+		for (let i = 0; i < total.length; i++) {
+			let element = total[i];
+			set.add(element[key]);
+		}
+		console.log(set);
+		return Array.from(set);
 	};
 
 	const showNamelist = (obj) => {
@@ -28,11 +39,17 @@ function Measure(props) {
 							)
 						}
 						type={detectDatatype(obj[ele])}
+						count={
+							detectDatatype(obj[ele]) === "number"
+								? null
+								: countStringTypes(ele, jsonData)
+						}
 					></Box>
 				</ListGroup.Item>
 			);
 		});
 	};
+
 	return <ListGroup variant="flush">{showNamelist(jsonData[0])}</ListGroup>;
 }
 

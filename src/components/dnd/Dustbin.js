@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDrop } from "react-dnd";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import rootActions from "../../actions/rootActions";
 
 const style = {
@@ -9,9 +9,9 @@ const style = {
 	border: "1px solid black"
 };
 
-export const Dustbin = ({ name, lastDroppedItem, onDrop, accept }) => {
+export const Dustbin = ({ lastDroppedItem, onDrop }) => {
 	const [{ canDrop, isOver }, drop] = useDrop({
-		accept: accept,
+		accept: ["string", "number"],
 		drop: onDrop,
 		collect: (monitor) => ({
 			isOver: monitor.isOver(),

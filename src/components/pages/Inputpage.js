@@ -33,7 +33,6 @@ function Inputpage() {
 					{activeKey === "analysis" ? <div>Analysis</div> : null}
 				</Col>
 				<Col lg={9} md={8} sm={6}>
-					{/* {dataname ? <GraphSection></GraphSection> : null} */}
 					{dataname ? <ChooseGraph></ChooseGraph> : null}
 				</Col>
 			</Row>

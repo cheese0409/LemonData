@@ -4,6 +4,12 @@ const rootActions = {
 	},
 	setAxis: (payload) => {
 		return { type: "SET_AXIS", payload };
+	},
+	setManipulation: (payload) => {
+		return { type: "SET_MANIPULATION", payload };
+	},
+	setGraphSuggestions: (payload) => {
+		return { type: "SET_GRAPH_SUGGESTIONS", payload };
 	}
 };
 

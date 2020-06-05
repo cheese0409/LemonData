@@ -40,8 +40,45 @@ const currentAxis = (state = { X: null, Y: null }, action) => {
 			return state;
 	}
 };
+
+const currentManipulation = (state = null, action) => {
+	switch (action.type) {
+		case "SET_MANIPULATION":
+			return action.payload;
+		default:
+			return state;
+	}
+};
+
+const currentGraphSuggestions = (
+	state = {
+		bar: false,
+		line: false,
+		pie: false,
+		heatmap: false,
+		scatter: false
+	},
+	action
+) => {
+	switch (action.type) {
+		case "SET_GRAPH_SUGGESTIONS":
+			return {
+				...state,
+				bar: action.payload.bar,
+				line: action.payload.line,
+				pie: action.payload.pie,
+				heatmap: action.payload.heatmap,
+				scatter: action.payload.scatter
+			};
+		default:
+			return state;
+	}
+};
+
 const rootReducer = combineReducers({
 	dataset: currentDataset,
-	axis: currentAxis
+	axis: currentAxis,
+	manipulation: currentManipulation,
+	graphSelection: currentGraphSuggestions
 });
 export default rootReducer;
