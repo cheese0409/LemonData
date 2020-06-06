@@ -20,7 +20,6 @@ function Measure(props) {
 			let element = total[i];
 			set.add(element[key]);
 		}
-		console.log(set);
 		return Array.from(set);
 	};
 
@@ -33,9 +32,9 @@ function Measure(props) {
 						name={ele}
 						icon={
 							detectDatatype(obj[ele]) === "number" ? (
-								<i class="fas fa-hashtag mr-2 text-info"></i>
+								<i className="fas fa-hashtag mr-2 text-info"></i>
 							) : (
-								<i class="fas fa-font mr-2 text-primary"></i>
+								<i className="fas fa-font mr-2 text-primary"></i>
 							)
 						}
 						type={detectDatatype(obj[ele])}

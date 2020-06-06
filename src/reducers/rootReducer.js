@@ -43,6 +43,8 @@ const currentAxis = (state = { X: null, Y: null }, action) => {
 
 const currentManipulation = (state = null, action) => {
 	switch (action.type) {
+		case "SET_DATASET":
+			return null;
 		case "SET_MANIPULATION":
 			return action.payload;
 		default:
@@ -75,10 +77,22 @@ const currentGraphSuggestions = (
 	}
 };
 
+const currentGraphChoice = (state = null, action) => {
+	switch (action.type) {
+		case "SET_DATASET":
+			return null;
+		case "SET_FINAL_GRAPH_TYPE":
+			return action.payload;
+		default:
+			return state;
+	}
+};
+
 const rootReducer = combineReducers({
 	dataset: currentDataset,
 	axis: currentAxis,
 	manipulation: currentManipulation,
-	graphSelection: currentGraphSuggestions
+	graphSelection: currentGraphSuggestions,
+	finalChoice: currentGraphChoice
 });
 export default rootReducer;

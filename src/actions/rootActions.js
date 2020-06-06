@@ -10,6 +10,9 @@ const rootActions = {
 	},
 	setGraphSuggestions: (payload) => {
 		return { type: "SET_GRAPH_SUGGESTIONS", payload };
+	},
+	setFinalGraphType: (payload) => {
+		return { type: "SET_FINAL_GRAPH_TYPE", payload };
 	}
 };
 

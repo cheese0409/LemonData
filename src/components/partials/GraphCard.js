@@ -15,7 +15,7 @@ function GraphCard(props) {
 
 	const giveCardsSuggestion = (xval = null, yval = null) => {
 		if (xval && !yval) {
-			if (xval.type == "string" && !yval) {
+			if (xval.type == "string") {
 				if (xval.count.length > 5) {
 					return {
 						bar: false,
@@ -33,6 +33,14 @@ function GraphCard(props) {
 						pie: true
 					};
 				}
+			} else {
+				return {
+					line: false,
+					heatmap: false,
+					scatter: false,
+					bar: false,
+					pie: false
+				};
 			}
 		} else if (xval && yval) {
 			if (xval.type == "string" && yval.type == "string") {
@@ -70,6 +78,14 @@ function GraphCard(props) {
 					scatter: true
 				};
 			}
+		} else {
+			return {
+				bar: false,
+				pie: false,
+				heatmap: false,
+				line: false,
+				scatter: true
+			};
 		}
 	};
 
@@ -91,7 +107,14 @@ function GraphCard(props) {
 							Some quick example text to build on the card title and make up the
 							bulk of the card's content.
 						</Card.Text>
-						<Button variant="primary">Go somewhere</Button>
+						<Button
+							variant="primary"
+							onClick={() => {
+								dispatch(rootActions.setFinalGraphType(type));
+							}}
+						>
+							Generate
+						</Button>
 					</Card.Body>
 				</Card>
 			);

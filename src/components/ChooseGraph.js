@@ -5,10 +5,12 @@ import { useDispatch, useSelector } from "react-redux";
 import rootActions from "../actions/rootActions";
 import { DropdownButton, Dropdown } from "react-bootstrap";
 import GraphCard from "./partials/GraphCard";
+import Plot from "./Plot";
 
 function ChooseGraph(props) {
 	const dispatch = useDispatch();
 	const axis = useSelector((state) => state.axis);
+	// const finalChoice = useSelector((state) => state.finalChoice);
 	const manipulation = useSelector((state) => state.manipulation);
 
 	return (
@@ -21,14 +23,6 @@ function ChooseGraph(props) {
 						lastDroppedItem={axis.X}
 						onDrop={(item) => {
 							dispatch(rootActions.setAxis({ X: item }));
-							// setAxis(item, "X", dispatch).then((res) => {
-							// 	console.log(res);
-							// 	// dispatch(
-							// 	// 	rootActions.setGraphSuggestions(
-							// 	// 		giveCardsSuggestion(axis.X, updateAxis.Y)
-							// 	// 	)
-							// 	// );
-							// });
 						}}
 						key="X"
 					/>
@@ -39,14 +33,6 @@ function ChooseGraph(props) {
 						lastDroppedItem={axis.Y}
 						onDrop={(item) => {
 							dispatch(rootActions.setAxis({ Y: item }));
-							// setAxis(item, "Y", dispatch).then((res) => {
-							// 	console.log(res);
-							// 	// dispatch(
-							// 	// 	rootActions.setGraphSuggestions(
-							// 	// 		giveCardsSuggestion(axis.X, axis.Y)
-							// 	// 	)
-							// 	// );
-							// });
 						}}
 						key="Y"
 					/>
@@ -59,7 +45,6 @@ function ChooseGraph(props) {
 							onClick={() => {
 								dispatch(rootActions.setManipulation("SUM"));
 							}}
-							eventKey="sum"
 						>
 							SUM
 						</Dropdown.Item>
@@ -67,7 +52,6 @@ function ChooseGraph(props) {
 							onClick={() => {
 								dispatch(rootActions.setManipulation("AVG"));
 							}}
-							eventKey="avg"
 						>
 							AVG
 						</Dropdown.Item>
@@ -83,7 +67,6 @@ function ChooseGraph(props) {
 							onClick={() => {
 								dispatch(rootActions.setManipulation("MIN"));
 							}}
-							eventKey="min"
 						>
 							MIN
 						</Dropdown.Item>
@@ -91,7 +74,6 @@ function ChooseGraph(props) {
 							onClick={() => {
 								dispatch(rootActions.setManipulation("STD"));
 							}}
-							eventKey="std"
 						>
 							STD
 						</Dropdown.Item>
@@ -99,11 +81,12 @@ function ChooseGraph(props) {
 				) : null}
 			</div>
 
-			<div>
+			<div style={{ display: "flex" }}>
 				{axis.X || axis.Y ? (
 					<GraphCard x={axis.X} y={axis.Y}></GraphCard>
 				) : null}
 			</div>
+			{/* <div>{finalChoice ? <Plot></Plot> : null}</div> */}
 		</div>
 	);
 }
