@@ -1,10 +1,10 @@
 import React from "react";
 import { ListGroup } from "react-bootstrap";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { Box } from "./dnd/Box";
 
 function Measure(props) {
-	const { name, rowData, jsonData } = useSelector((state) => state.dataset);
+	const { jsonData } = useSelector((state) => state.dataset);
 
 	const detectDatatype = (val) => {
 		if (!isNaN(val)) {

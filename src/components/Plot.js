@@ -6,234 +6,6 @@ import { ResponsiveLine as Line } from "@nivo/line";
 import { ResponsivePie as Pie } from "@nivo/pie";
 import { ResponsiveScatterPlot as Scatter } from "@nivo/scatterplot";
 
-const heatmapData = [
-	{
-		country: "AD",
-		"hot dog": 66,
-		"hot dogColor": "hsl(32, 70%, 50%)",
-		burger: 95,
-		burgerColor: "hsl(281, 70%, 50%)",
-		sandwich: 40,
-		sandwichColor: "hsl(157, 70%, 50%)",
-		kebab: 8,
-		kebabColor: "hsl(265, 70%, 50%)",
-		fries: 23,
-		friesColor: "hsl(221, 70%, 50%)",
-		donut: 25,
-		donutColor: "hsl(262, 70%, 50%)",
-		junk: 95,
-		junkColor: "hsl(342, 70%, 50%)",
-		sushi: 17,
-		sushiColor: "hsl(211, 70%, 50%)",
-		ramen: 79,
-		ramenColor: "hsl(215, 70%, 50%)",
-		curry: 20,
-		curryColor: "hsl(294, 70%, 50%)",
-		udon: 45,
-		udonColor: "hsl(329, 70%, 50%)"
-	},
-	{
-		country: "AE",
-		"hot dog": 47,
-		"hot dogColor": "hsl(206, 70%, 50%)",
-		burger: 5,
-		burgerColor: "hsl(237, 70%, 50%)",
-		sandwich: 57,
-		sandwichColor: "hsl(290, 70%, 50%)",
-		kebab: 97,
-		kebabColor: "hsl(165, 70%, 50%)",
-		fries: 44,
-		friesColor: "hsl(27, 70%, 50%)",
-		donut: 94,
-		donutColor: "hsl(47, 70%, 50%)",
-		junk: 99,
-		junkColor: "hsl(291, 70%, 50%)",
-		sushi: 79,
-		sushiColor: "hsl(223, 70%, 50%)",
-		ramen: 100,
-		ramenColor: "hsl(47, 70%, 50%)",
-		curry: 21,
-		curryColor: "hsl(285, 70%, 50%)",
-		udon: 39,
-		udonColor: "hsl(114, 70%, 50%)"
-	},
-	{
-		country: "AF",
-		"hot dog": 63,
-		"hot dogColor": "hsl(325, 70%, 50%)",
-		burger: 10,
-		burgerColor: "hsl(235, 70%, 50%)",
-		sandwich: 66,
-		sandwichColor: "hsl(253, 70%, 50%)",
-		kebab: 5,
-		kebabColor: "hsl(351, 70%, 50%)",
-		fries: 46,
-		friesColor: "hsl(213, 70%, 50%)",
-		donut: 88,
-		donutColor: "hsl(346, 70%, 50%)",
-		junk: 52,
-		junkColor: "hsl(333, 70%, 50%)",
-		sushi: 94,
-		sushiColor: "hsl(145, 70%, 50%)",
-		ramen: 39,
-		ramenColor: "hsl(17, 70%, 50%)",
-		curry: 90,
-		curryColor: "hsl(288, 70%, 50%)",
-		udon: 77,
-		udonColor: "hsl(262, 70%, 50%)"
-	},
-	{
-		country: "AG",
-		"hot dog": 44,
-		"hot dogColor": "hsl(122, 70%, 50%)",
-		burger: 63,
-		burgerColor: "hsl(2, 70%, 50%)",
-		sandwich: 84,
-		sandwichColor: "hsl(42, 70%, 50%)",
-		kebab: 61,
-		kebabColor: "hsl(252, 70%, 50%)",
-		fries: 12,
-		friesColor: "hsl(317, 70%, 50%)",
-		donut: 2,
-		donutColor: "hsl(220, 70%, 50%)",
-		junk: 68,
-		junkColor: "hsl(75, 70%, 50%)",
-		sushi: 60,
-		sushiColor: "hsl(54, 70%, 50%)",
-		ramen: 45,
-		ramenColor: "hsl(8, 70%, 50%)",
-		curry: 33,
-		curryColor: "hsl(159, 70%, 50%)",
-		udon: 95,
-		udonColor: "hsl(274, 70%, 50%)"
-	},
-	{
-		country: "AI",
-		"hot dog": 76,
-		"hot dogColor": "hsl(200, 70%, 50%)",
-		burger: 84,
-		burgerColor: "hsl(311, 70%, 50%)",
-		sandwich: 37,
-		sandwichColor: "hsl(2, 70%, 50%)",
-		kebab: 75,
-		kebabColor: "hsl(317, 70%, 50%)",
-		fries: 22,
-		friesColor: "hsl(59, 70%, 50%)",
-		donut: 61,
-		donutColor: "hsl(26, 70%, 50%)",
-		junk: 47,
-		junkColor: "hsl(40, 70%, 50%)",
-		sushi: 81,
-		sushiColor: "hsl(62, 70%, 50%)",
-		ramen: 54,
-		ramenColor: "hsl(27, 70%, 50%)",
-		curry: 95,
-		curryColor: "hsl(186, 70%, 50%)",
-		udon: 74,
-		udonColor: "hsl(81, 70%, 50%)"
-	},
-	{
-		country: "AL",
-		"hot dog": 22,
-		"hot dogColor": "hsl(354, 70%, 50%)",
-		burger: 76,
-		burgerColor: "hsl(294, 70%, 50%)",
-		sandwich: 71,
-		sandwichColor: "hsl(18, 70%, 50%)",
-		kebab: 37,
-		kebabColor: "hsl(14, 70%, 50%)",
-		fries: 90,
-		friesColor: "hsl(8, 70%, 50%)",
-		donut: 19,
-		donutColor: "hsl(146, 70%, 50%)",
-		junk: 15,
-		junkColor: "hsl(65, 70%, 50%)",
-		sushi: 19,
-		sushiColor: "hsl(71, 70%, 50%)",
-		ramen: 78,
-		ramenColor: "hsl(357, 70%, 50%)",
-		curry: 45,
-		curryColor: "hsl(65, 70%, 50%)",
-		udon: 50,
-		udonColor: "hsl(79, 70%, 50%)"
-	},
-	{
-		country: "AM",
-		"hot dog": 40,
-		"hot dogColor": "hsl(279, 70%, 50%)",
-		burger: 62,
-		burgerColor: "hsl(335, 70%, 50%)",
-		sandwich: 54,
-		sandwichColor: "hsl(266, 70%, 50%)",
-		kebab: 74,
-		kebabColor: "hsl(96, 70%, 50%)",
-		fries: 8,
-		friesColor: "hsl(204, 70%, 50%)",
-		donut: 3,
-		donutColor: "hsl(285, 70%, 50%)",
-		junk: 43,
-		junkColor: "hsl(182, 70%, 50%)",
-		sushi: 10,
-		sushiColor: "hsl(111, 70%, 50%)",
-		ramen: 88,
-		ramenColor: "hsl(269, 70%, 50%)",
-		curry: 52,
-		curryColor: "hsl(46, 70%, 50%)",
-		udon: 69,
-		udonColor: "hsl(247, 70%, 50%)"
-	},
-	{
-		country: "AO",
-		"hot dog": 1,
-		"hot dogColor": "hsl(61, 70%, 50%)",
-		burger: 45,
-		burgerColor: "hsl(67, 70%, 50%)",
-		sandwich: 37,
-		sandwichColor: "hsl(82, 70%, 50%)",
-		kebab: 47,
-		kebabColor: "hsl(0, 70%, 50%)",
-		fries: 85,
-		friesColor: "hsl(245, 70%, 50%)",
-		donut: 7,
-		donutColor: "hsl(210, 70%, 50%)",
-		junk: 94,
-		junkColor: "hsl(273, 70%, 50%)",
-		sushi: 9,
-		sushiColor: "hsl(210, 70%, 50%)",
-		ramen: 70,
-		ramenColor: "hsl(181, 70%, 50%)",
-		curry: 52,
-		curryColor: "hsl(231, 70%, 50%)",
-		udon: 0,
-		udonColor: "hsl(354, 70%, 50%)"
-	},
-	{
-		country: "AQ",
-		"hot dog": 43,
-		"hot dogColor": "hsl(110, 70%, 50%)",
-		burger: 46,
-		burgerColor: "hsl(158, 70%, 50%)",
-		sandwich: 92,
-		sandwichColor: "hsl(142, 70%, 50%)",
-		kebab: 4,
-		kebabColor: "hsl(62, 70%, 50%)",
-		fries: 93,
-		friesColor: "hsl(108, 70%, 50%)",
-		donut: 53,
-		donutColor: "hsl(291, 70%, 50%)",
-		junk: 57,
-		junkColor: "hsl(313, 70%, 50%)",
-		sushi: 23,
-		sushiColor: "hsl(236, 70%, 50%)",
-		ramen: 77,
-		ramenColor: "hsl(268, 70%, 50%)",
-		curry: 98,
-		curryColor: "hsl(307, 70%, 50%)",
-		udon: 10,
-		udonColor: "hsl(208, 70%, 50%)"
-	}
-];
-
 const barData = [
 	{
 		country: "AD",
@@ -615,52 +387,15 @@ const lineData = [
 	}
 ];
 
-const pieData = [
-	{
-		id: "scala",
-		label: "scala",
-		value: 513,
-		color: `hsl(200, 70%, 50%)`
-	},
-	{
-		id: "lisp",
-		label: "lisp",
-		value: 100,
-		color: "hsl(297, 70%, 50%)"
-	},
-	{
-		id: "erlang",
-		label: "erlang",
-		value: 464,
-		color: "hsl(54, 70%, 50%)"
-	},
-	{
-		id: "python",
-		label: "python",
-		value: 373,
-		color: "hsl(264, 70%, 50%)"
-	},
-	{
-		id: "javascript",
-		label: "javascript",
-		value: 455,
-		color: "hsl(180, 70%, 50%)"
-	}
-];
-
 function Plot(props) {
-	useEffect(() => {
-		console.log("rendered");
-	});
 	const {
 		axis,
 		margin,
 		width,
 		height,
-		xScale,
-		yScale,
 		finalChoice,
-		dataset
+		dataset,
+		manipulation
 	} = props;
 
 	const handleScatterData = (inputX, inputY, data) => {
@@ -708,22 +443,173 @@ function Plot(props) {
 		return resultArr;
 	};
 
+	function getRandomIntInclusive(min, max) {
+		min = Math.ceil(min);
+		max = Math.floor(max);
+		return Math.floor(Math.random() * (max - min + 1)) + min; //含最大值，含最小值
+	}
+
 	const handleLineData = (inputX, inputY, data) => {};
-	const handlePieData = (inputX, inputY, data) => {};
-	const handleBarData = (inputX, inputY, data) => {};
+
+	const handlePieData = (inputX, data) => {
+		let resultArr = [];
+		let name = inputX.name;
+		let labels = inputX.count;
+		let resultObj = {};
+		resultObj = labels.reduce((acc, curr) => {
+			acc[curr] = 0;
+			return acc;
+		}, {});
+		for (let i = 0; i < data.length; i++) {
+			resultObj[data[i][name]]++;
+		}
+		for (let prop in resultObj) {
+			resultArr.push({
+				id: `${prop}`,
+				label: `${prop}`,
+				value: resultObj[prop]
+			});
+		}
+		return resultArr;
+	};
+
+	const handleBarData = (inputX, inputY, data, manipulation) => {
+		if (inputY === null) {
+			let resultArr = [];
+			let name = inputX.name;
+			let labels = inputX.count;
+			let resultObj = {};
+			resultObj = labels.reduce((acc, curr) => {
+				acc[curr] = 0;
+				return acc;
+			}, {});
+			for (let i = 0; i < data.length; i++) {
+				resultObj[data[i][name]]++;
+			}
+			for (let prop in resultObj) {
+				resultArr.push({ [name]: prop, value: resultObj[prop] });
+			}
+			return resultArr;
+		} else if (inputY && manipulation) {
+			let resultArr = [];
+			let xname = inputX.name;
+			let xlabels = inputX.count;
+			let yname = inputY.name;
+			let resultObj = {};
+			resultObj = xlabels.reduce((acc, curr) => {
+				acc[curr] = [];
+				return acc;
+			}, {});
+			for (let i = 0; i < data.length; i++) {
+				resultObj[data[i][xname]].push(Number(data[i][yname]));
+			}
+			if (manipulation === "SUM") {
+				let temp = { ...resultObj };
+				for (let prop in temp) {
+					temp[prop] = temp[prop].reduce((acc, cur) => {
+						return acc + cur;
+					});
+				}
+				for (let prop in temp) {
+					resultArr.push({
+						[xname]: prop,
+						value: Math.round(temp[prop] * 100) / 100
+					});
+				}
+				return resultArr;
+			} else if (manipulation === "AVG") {
+				let temp = { ...resultObj };
+				for (let prop in temp) {
+					temp[prop] =
+						temp[prop].reduce((acc, cur) => {
+							return acc + cur;
+						}) / temp[prop].length;
+				}
+				for (let prop in temp) {
+					resultArr.push({
+						[xname]: prop,
+						value: Math.round(temp[prop] * 100) / 100
+					});
+				}
+				return resultArr;
+			} else if (manipulation === "MAX") {
+				let temp = { ...resultObj };
+				for (let prop in temp) {
+					temp[prop] = Math.max(...temp[prop]);
+				}
+				for (let prop in temp) {
+					resultArr.push({
+						[xname]: prop,
+						value: Math.round(temp[prop] * 100) / 100
+					});
+				}
+				return resultArr;
+			} else if (manipulation === "MIN") {
+				let temp = { ...resultObj };
+				for (let prop in temp) {
+					temp[prop] = Math.min(...temp[prop]);
+				}
+				for (let prop in temp) {
+					resultArr.push({
+						[xname]: prop,
+						value: Math.round(temp[prop] * 100) / 100
+					});
+				}
+				return resultArr;
+			} else if (manipulation === "STD") {
+				let temp = { ...resultObj };
+				for (let prop in temp) {
+					let mean =
+						temp[prop].reduce((acc, cur) => {
+							return acc + cur;
+						}) / temp[prop].length;
+					let deviations = temp[prop].map((x) => x - mean);
+					let stddev = Math.sqrt(
+						deviations.map((x) => x * x).reduce((x, y) => x + y) /
+							(data.length - 1)
+					);
+					temp[prop] = stddev;
+				}
+				for (let prop in temp) {
+					resultArr.push({
+						[xname]: prop,
+						value: Math.round(temp[prop] * 100) / 100
+					});
+				}
+				return resultArr;
+			}
+		}
+	};
+
+	const generateColorsRange = (x, y) => {
+		let sum = x.count.length * y.count.length;
+		let arr = [];
+		for (let i = 0; i < sum; i++) {
+			arr.push(
+				`rgb(${getRandomIntInclusive(0, 255)}, ${getRandomIntInclusive(
+					0,
+					255
+				)}, ${getRandomIntInclusive(0, 255)})`
+			);
+		}
+		return arr;
+	};
 
 	switch (finalChoice) {
 		case "bar":
 			return (
 				<Bar
-					data={barData}
+					data={handleBarData(axis.X, axis.Y, dataset, manipulation)}
+					indexBy={axis.X.name}
+					keys={["value"]}
 					margin={margin}
 					width={width}
 					height={height}
-					xScale={xScale}
-					yScale={yScale}
 					axisBottom={{ ...props.axisBottom, legend: `${axis.X.name}` }}
-					axisLeft={{ ...props.axisLeft, legend: `${axis.Y.name}` }}
+					axisLeft={{
+						...props.axisLeft,
+						legend: axis.Y ? `${axis.Y.name}-${manipulation}` : "Count Value"
+					}}
 				></Bar>
 			);
 		case "line":
@@ -733,25 +619,25 @@ function Plot(props) {
 					margin={margin}
 					width={width}
 					height={height}
-					xScale={xScale}
-					yScale={yScale}
 					axisBottom={{ ...props.axisBottom, legend: `${axis.X.name}` }}
 					axisLeft={{ ...props.axisLeft, legend: `${axis.Y.name}` }}
 				></Line>
 			);
 		case "heatmap":
-			let heatmapData = handleHeatmapData(axis.X, axis.Y, dataset);
 			return (
 				<Heatmap
-					data={heatmapData}
+					data={handleHeatmapData(axis.X, axis.Y, dataset)}
 					indexBy={axis.Y.name}
 					keys={axis.X.count}
 					margin={margin}
 					width={width}
 					height={height}
+					padding={2}
 					axisRight={null}
 					axisTop={null}
+					colors="PRGn"
 					enableLabels={true}
+					labelTextColor={{ from: "color", modifiers: [["darker", 2]] }}
 					axisBottom={{
 						...props.axisBottom,
 						legend: `${axis.X.name}`,
@@ -762,19 +648,20 @@ function Plot(props) {
 						legend: `${axis.Y.name}`,
 						enable: true
 					}}
+					animate={true}
+					motionStiffness={80}
+					motionDamping={9}
+					hoverTarget="cell"
+					cellHoverOthersOpacity={0.25}
 				></Heatmap>
 			);
 		case "pie":
 			return (
 				<Pie
-					data={pieData}
+					data={handlePieData(axis.X, dataset)}
 					margin={margin}
 					width={width}
 					height={height}
-					xScale={xScale}
-					yScale={yScale}
-					axisBottom={{ ...props.axisBottom, legend: `${axis.X.name}` }}
-					axisLeft={{ ...props.axisLeft, legend: `${axis.Y.name}` }}
 				></Pie>
 			);
 		case "scatter":
@@ -784,8 +671,16 @@ function Plot(props) {
 					margin={margin}
 					width={width}
 					height={height}
-					xScale={xScale}
-					yScale={yScale}
+					xScale={{
+						type: "linear",
+						min: "auto",
+						max: "auto"
+					}}
+					yScale={{
+						type: "linear",
+						min: "auto",
+						max: "auto"
+					}}
 					axisBottom={{ ...props.axisBottom, legend: `${axis.X.name}` }}
 					axisLeft={{ ...props.axisLeft, legend: `${axis.Y.name}` }}
 				></Scatter>

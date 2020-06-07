@@ -5,6 +5,9 @@ const rootActions = {
 	setAxis: (payload) => {
 		return { type: "SET_AXIS", payload };
 	},
+	clearAxis: () => {
+		return { type: "CLEAR_AXIS" };
+	},
 	setManipulation: (payload) => {
 		return { type: "SET_MANIPULATION", payload };
 	},

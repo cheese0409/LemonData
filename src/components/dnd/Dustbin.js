@@ -1,7 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDrop } from "react-dnd";
-import { useDispatch, useSelector } from "react-redux";
-import rootActions from "../../actions/rootActions";
 
 const style = {
 	height: "2rem",

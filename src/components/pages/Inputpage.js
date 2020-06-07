@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import LoaddataBtn from "../LoaddataBtn";
-import { Container, Nav, Row, Col, ListGroup } from "react-bootstrap";
+import { Container, Nav, Row, Col, Button } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import Sidebar from "../Sidebar";
-import Uploader from "../Uploader";
 import ChooseGraph from "../ChooseGraph";
 import Plot from "../Plot";
+import { useDispatch } from "react-redux";
+import rootActions from "../../actions/rootActions";
 
 function Inputpage() {
 	const [activeKey, handleSelect] = useState("data");
@@ -13,6 +13,8 @@ function Inputpage() {
 	const dataname = useSelector((state) => state.dataset.name);
 	const jsonData = useSelector((state) => state.dataset.jsonData);
 	const finalChoice = useSelector((state) => state.finalChoice);
+	const manipulation = useSelector((state) => state.manipulation);
+	const dispatch = useDispatch();
 	return (
 		<Container fluid>
 			<Row>
@@ -36,26 +38,31 @@ function Inputpage() {
 					{activeKey === "analysis" ? <div>Analysis</div> : null}
 				</Col>
 				<Col lg={9} md={8} sm={6}>
-					{dataname ? <ChooseGraph></ChooseGraph> : null}
+					{dataname ? (
+						<ChooseGraph axis={axis} manipulation={manipulation}></ChooseGraph>
+					) : null}
+					{finalChoice ? (
+						<div>
+							<Button
+								onClick={() => {
+									dispatch(rootActions.clearAxis());
+								}}
+								variant="outline-primary"
+							>
+								Clear
+							</Button>
+						</div>
+					) : null}
 					{finalChoice ? (
 						<div style={{ height: "500px", width: "600px" }}>
 							<Plot
 								dataset={jsonData}
 								finalChoice={finalChoice}
+								manipulation={manipulation}
 								axis={axis}
-								width={800}
-								height={600}
+								width={600}
+								height={500}
 								margin={{ top: 60, right: 140, bottom: 70, left: 90 }}
-								xScale={{
-									type: "linear",
-									min: "auto",
-									max: "auto"
-								}}
-								yScale={{
-									type: "linear",
-									min: "auto",
-									max: "auto"
-								}}
 								axisBottom={{
 									orient: "bottom",
 									tickSize: 0,

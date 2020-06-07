@@ -1,6 +1,4 @@
 import { combineReducers } from "redux";
-import rootActions from "../actions/rootActions";
-import { act } from "react-dom/test-utils";
 
 const currentDataset = (
 	state = { name: null, rowData: null, jsonData: null },
@@ -14,7 +12,6 @@ const currentDataset = (
 				rowData: action.payload.rowData,
 				jsonData: action.payload.jsonData
 			};
-
 		default:
 			return state;
 	}
@@ -36,15 +33,23 @@ const currentAxis = (state = { X: null, Y: null }, action) => {
 				copy.Y = action.payload.Y;
 			}
 			return copy;
+		case "CLEAR_AXIS":
+			return {
+				...state,
+				X: null,
+				Y: null
+			};
 		default:
 			return state;
 	}
 };
 
-const currentManipulation = (state = null, action) => {
+const currentManipulation = (state = "SUM", action) => {
 	switch (action.type) {
 		case "SET_DATASET":
-			return null;
+			return "SUM";
+		case "CLEAR_AXIS":
+			return "SUM";
 		case "SET_MANIPULATION":
 			return action.payload;
 		default:
@@ -72,6 +77,15 @@ const currentGraphSuggestions = (
 				heatmap: action.payload.heatmap,
 				scatter: action.payload.scatter
 			};
+		case "CLEAR_AXIS":
+			return {
+				...state,
+				bar: false,
+				line: false,
+				pie: false,
+				heatmap: false,
+				scatter: false
+			};
 		default:
 			return state;
 	}
@@ -80,6 +94,8 @@ const currentGraphSuggestions = (
 const currentGraphChoice = (state = null, action) => {
 	switch (action.type) {
 		case "SET_DATASET":
+			return null;
+		case "CLEAR_AXIS":
 			return null;
 		case "SET_FINAL_GRAPH_TYPE":
 			return action.payload;
