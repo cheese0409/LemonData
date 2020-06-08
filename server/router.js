@@ -1,5 +1,18 @@
 const router = require("express").Router();
 const { toCSVRow, toJSON } = require("./util");
+var multer = require("multer");
+var path = require("path");
+var storage = multer.diskStorage({
+	destination: function (req, file, cb) {
+		cb(null, `${__dirname}/.uploads/`);
+	},
+	filename: function (req, file, cb) {
+		cb(null, file.originalname);
+	}
+});
+
+var upload = multer({ storage: storage });
+var fs = require("fs");
 
 router.get("/file/:content", async (req, res) => {
 	var rowData, jsonData;
@@ -34,8 +47,16 @@ router.get("/file/:content", async (req, res) => {
 	}
 });
 
-router.post("/tojson", () => {
-	console.log("tojson route");
+router.post("/upload", upload.any(), async (req, res, next) => {
+	if (!req.files) {
+		return next(new Error("No files uploaded"));
+	}
+	req.files.forEach(async (file) => {
+		rowData = await toCSVRow(`${file.path}`);
+		jsonData = await toJSON(`${file.path}`);
+		fs.unlinkSync(file.path);
+		return res.status(200).json({ rowData, jsonData });
+	});
 });
 
 module.exports = router;

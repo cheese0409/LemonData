@@ -16,7 +16,7 @@ function GraphCard(props) {
 	const giveCardsSuggestion = (xval = null, yval = null) => {
 		if (xval && !yval) {
 			if (xval.type === "string") {
-				if (xval.count.length > 5) {
+				if (xval.count.length > 8) {
 					return {
 						bar: false,
 						pie: true,
@@ -52,9 +52,9 @@ function GraphCard(props) {
 					heatmap: true
 				};
 			} else if (xval.type === "string" && yval.type === "number") {
-				if (xval.count.length > 5) {
+				if (xval.count.length > 8) {
 					return {
-						bar: false,
+						bar: true,
 						pie: false,
 						heatmap: false,
 						scatter: false,

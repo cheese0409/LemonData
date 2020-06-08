@@ -40,7 +40,9 @@ function LoaddataBtn(props) {
 						</Nav.Item>
 					</Nav>
 					<div>
-						{activeKey === "upload" ? <Uploader></Uploader> : null}
+						{activeKey === "upload" ? (
+							<Uploader passVal={saveChange}></Uploader>
+						) : null}
 						{activeKey === "sample" ? (
 							<Samples passVal={saveChange}></Samples>
 						) : null}
