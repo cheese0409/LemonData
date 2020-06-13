@@ -61,13 +61,20 @@ class Uploader extends React.Component {
 
 	render() {
 		return (
-			<Row>
-				<Col
+			<div
+				style={{
+					marginTop: "30px",
+					display: "flex",
+					justifyContent: "space-around"
+				}}
+			>
+				<div
 					style={{
 						marginTop: "30px",
 						marginBottom: "10px",
 						display: "flex",
-						flexDirection: "column"
+						flexDirection: "column",
+						alignItems: "center"
 					}}
 				>
 					<Files
@@ -90,7 +97,7 @@ class Uploader extends React.Component {
 					<Button
 						variant="success"
 						onClick={this.filesUpload}
-						style={{ width: "150px" }}
+						style={{ width: "150px", marginTop: "20px" }}
 					>
 						{this.state.isLoading ? (
 							<div>
@@ -143,8 +150,8 @@ class Uploader extends React.Component {
 							</ul>
 						</div>
 					) : null}
-				</Col>
-				<Col
+				</div>
+				<div
 					style={{
 						marginTop: "30px",
 						marginBottom: "10px",
@@ -154,12 +161,13 @@ class Uploader extends React.Component {
 				>
 					{this.state.data ? (
 						<Datatable
+							width="600px"
 							header={this.state.data[0]}
 							body={this.state.data.slice(1)}
 						></Datatable>
 					) : null}
-				</Col>
-			</Row>
+				</div>
+			</div>
 		);
 	}
 }
