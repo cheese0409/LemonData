@@ -11,6 +11,9 @@ const rootActions = {
 	setManipulation: (payload) => {
 		return { type: "SET_MANIPULATION", payload };
 	},
+	setFiltering: (payload) => {
+		return { type: "SET_FILTERING", payload };
+	},
 	setGraphSuggestions: (payload) => {
 		return { type: "SET_GRAPH_SUGGESTIONS", payload };
 	},

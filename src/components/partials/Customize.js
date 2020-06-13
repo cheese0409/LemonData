@@ -628,7 +628,7 @@ function Customize({ finalChoice, myStyle }) {
 				borderRadius: barBorderRadiusComponent,
 				borderColor: barBorderColorComponent
 			},
-			line: {},
+			line: { enableLabel: enableLabelComponent },
 			scatter: {
 				enableLabel: enableLabelComponent,
 				labelTextColor: labelTextColorComponent

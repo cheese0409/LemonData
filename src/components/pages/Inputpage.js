@@ -14,6 +14,7 @@ function Inputpage() {
 	const finalChoice = useSelector((state) => state.finalChoice);
 	const manipulation = useSelector((state) => state.manipulation);
 	const style = useSelector((state) => state.style);
+	const filtering = useSelector((state) => state.filtering);
 	return (
 		<Container fluid>
 			<Row>
@@ -43,7 +44,14 @@ function Inputpage() {
 					{activeKey === "analysis" && finalChoice === null ? (
 						<div>No plot available yet...</div>
 					) : null}
-					{activeKey === "manipulation" ? <Manipulation></Manipulation> : null}
+					{activeKey === "manipulation" ? (
+						<Manipulation
+							finalChoice={finalChoice}
+							manipulation={manipulation}
+							axis={axis}
+							filtering={filtering}
+						></Manipulation>
+					) : null}
 				</Col>
 				<Col
 					lg={9}
@@ -61,6 +69,7 @@ function Inputpage() {
 							finalChoice={finalChoice}
 							jsonData={jsonData}
 							myStyle={style}
+							filtering={filtering}
 						></ChooseGraph>
 					) : null}
 				</Col>

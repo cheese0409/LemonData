@@ -26,7 +26,8 @@ function Plot({ ...props }) {
 		pieStyle,
 		scatterStyle,
 		heatmapStyle,
-		theme
+		theme,
+		filtering
 	} = props;
 
 	const { width, height, top, right, bottom, left } = basicStyle;
@@ -37,22 +38,35 @@ function Plot({ ...props }) {
 		bottom
 	};
 
-	const handleScatterData = (inputX, inputY, data) => {
+	const handleScatterData = (inputX, inputY, data, filtering) => {
+		let dataCopy = data.slice();
 		let resultArr = [];
 		let xname = inputX.name;
 		let yname = inputY.name;
-		for (let i = 0; i < data.length; i++) {
+
+		dataCopy = dataCopy.filter(
+			(ele) =>
+				ele[yname].length !== 0 && detectDatatype(ele[yname]) === "number"
+		);
+
+		if (filtering.symbol && filtering.num) {
+			dataCopy = dataCopy.filter((ele) => {
+				return eval(`${ele[yname]}${filtering.symbol}${filtering.num}`);
+			});
+		}
+
+		for (let i = 0; i < dataCopy.length; i++) {
 			if (
-				data[i][xname] === "" ||
-				data[i][yname] === "" ||
-				detectDatatype(data[i][xname]) === "string" ||
-				detectDatatype(data[i][yname]) === "string"
+				dataCopy[i][xname] === "" ||
+				dataCopy[i][yname] === "" ||
+				detectDatatype(dataCopy[i][xname]) === "string" ||
+				detectDatatype(dataCopy[i][yname]) === "string"
 			) {
 				continue;
 			} else {
 				resultArr.push({
-					x: Number(data[i][xname]),
-					y: Number(data[i][yname])
+					x: Number(dataCopy[i][xname]),
+					y: Number(dataCopy[i][yname])
 				});
 			}
 		}
@@ -90,21 +104,32 @@ function Plot({ ...props }) {
 		return resultArr;
 	};
 
-	const handleLineData = (inputX, inputY, data) => {
+	const handleLineData = (inputX, inputY, data, filtering) => {
 		let resultArr = [];
+		let dataCopy = data.slice();
 		let xname = inputX.name;
 		let yname = inputY.name;
-		for (let i = 0; i < data.length; i++) {
+		dataCopy = dataCopy.filter(
+			(ele) =>
+				ele[yname].length !== 0 && detectDatatype(ele[yname]) === "number"
+		);
+
+		if (filtering.symbol && filtering.num) {
+			dataCopy = dataCopy.filter((ele) => {
+				return eval(`${ele[yname]}${filtering.symbol}${filtering.num}`);
+			});
+		}
+		for (let i = 0; i < dataCopy.length; i++) {
 			if (
-				data[i][xname] === "" ||
-				data[i][yname] === "" ||
-				detectDatatype(data[i][yname]) === "string"
+				dataCopy[i][xname] === "" ||
+				dataCopy[i][yname] === "" ||
+				detectDatatype(dataCopy[i][yname]) === "string"
 			) {
 				continue;
 			} else {
 				resultArr.push({
-					x: data[i][xname],
-					y: Number(data[i][yname])
+					x: dataCopy[i][xname],
+					y: Number(dataCopy[i][yname])
 				});
 			}
 		}
@@ -133,8 +158,9 @@ function Plot({ ...props }) {
 		return resultArr;
 	};
 
-	const handleBarData = (inputX, inputY, data, manipulation) => {
+	const handleBarData = (inputX, inputY, data, manipulation, filtering) => {
 		if (inputY === null) {
+			let dataCopy = data.slice();
 			let resultArr = [];
 			let name = inputX.name;
 			let labels = inputX.count;
@@ -143,33 +169,47 @@ function Plot({ ...props }) {
 				acc[curr] = 0;
 				return acc;
 			}, {});
-			for (let i = 0; i < data.length; i++) {
-				resultObj[data[i][name]]++;
+			for (let i = 0; i < dataCopy.length; i++) {
+				resultObj[dataCopy[i][name]]++;
 			}
 			for (let prop in resultObj) {
 				resultArr.push({ [name]: prop, value: resultObj[prop] });
 			}
 			return resultArr;
 		} else if (inputY && manipulation) {
+			let dataCopy = data.slice();
 			let resultArr = [];
 			let xname = inputX.name;
-			let xlabels = inputX.count;
 			let yname = inputY.name;
 			let resultObj = {};
+
+			// remove y values which are not number
+			dataCopy = dataCopy.filter(
+				(ele) =>
+					ele[yname].length !== 0 && detectDatatype(ele[yname]) === "number"
+			);
+
+			// if exists add filtering rules
+			if (filtering.symbol && filtering.num) {
+				dataCopy = dataCopy.filter((ele) => {
+					return eval(`${ele[yname]}${filtering.symbol}${filtering.num}`);
+				});
+			}
+
+			// apply new x labels
+			var set = new Set();
+			for (let i = 0; i < dataCopy.length; i++) {
+				set.add(dataCopy[i][xname]);
+			}
+			let xlabels = Array.from(set);
 			resultObj = xlabels.reduce((acc, curr) => {
 				acc[curr] = [];
 				return acc;
 			}, {});
 
-			for (let i = 0; i < data.length; i++) {
-				if (
-					data[i][yname] !== "" &&
-					detectDatatype(data[i][yname]) === "number"
-				) {
-					resultObj[data[i][xname]].push(Number(data[i][yname]));
-				} else {
-					resultObj[data[i][xname]].push(0);
-				}
+			for (let i = 0; i < dataCopy.length; i++) {
+				let xprop = dataCopy[i][xname];
+				resultObj[xprop].push(Number(dataCopy[i][yname]));
 			}
 
 			if (manipulation === "SUM") {
@@ -254,7 +294,7 @@ function Plot({ ...props }) {
 		case "bar":
 			return (
 				<Bar
-					data={handleBarData(axis.X, axis.Y, dataset, manipulation)}
+					data={handleBarData(axis.X, axis.Y, dataset, manipulation, filtering)}
 					indexBy={axis.X.name}
 					keys={["value"]}
 					margin={margin}
@@ -281,12 +321,17 @@ function Plot({ ...props }) {
 		case "line":
 			return (
 				<Line
-					data={handleLineData(axis.X, axis.Y, dataset, manipulation)}
+					data={handleLineData(
+						axis.X,
+						axis.Y,
+						dataset,
+						manipulation,
+						filtering
+					)}
 					margin={margin}
 					width={width}
 					height={height}
-					enableLabels={basicStyle.enableLabel}
-					labelTextColor={basicStyle.labelTextColor}
+					enablePointLabel={basicStyle.enableLabel}
 					axisBottom={{
 						...props.axisBottom,
 						legend: `${axis.X.name}`,
@@ -348,7 +393,7 @@ function Plot({ ...props }) {
 		case "scatter":
 			return (
 				<Scatter
-					data={handleScatterData(axis.X, axis.Y, dataset)}
+					data={handleScatterData(axis.X, axis.Y, dataset, filtering)}
 					margin={margin}
 					width={width}
 					height={height}

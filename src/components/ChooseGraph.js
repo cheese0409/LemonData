@@ -6,7 +6,14 @@ import { Button } from "react-bootstrap";
 import GraphCard from "./partials/GraphCard";
 import Plot from "./Plot";
 
-function ChooseGraph({ axis, manipulation, finalChoice, myStyle, jsonData }) {
+function ChooseGraph({
+	axis,
+	manipulation,
+	finalChoice,
+	myStyle,
+	jsonData,
+	filtering
+}) {
 	const dispatch = useDispatch();
 	return (
 		<div>
@@ -82,6 +89,7 @@ function ChooseGraph({ axis, manipulation, finalChoice, myStyle, jsonData }) {
 							finalChoice={finalChoice}
 							manipulation={manipulation}
 							axis={axis}
+							filtering={filtering}
 							{...myStyle}
 							axisBottom={{
 								orient: "bottom",

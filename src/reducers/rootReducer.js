@@ -38,14 +38,30 @@ const currentAxis = (state = { X: null, Y: null }, action) => {
 	}
 };
 
-const currentManipulation = (state = "SUM", action) => {
+const currentManipulation = (state = "AVG", action) => {
 	switch (action.type) {
 		case "SET_DATASET":
-			return "SUM";
+			return "AVG";
 		case "CLEAR_AXIS":
 			return state;
 		case "SET_MANIPULATION":
 			return action.payload;
+		default:
+			return state;
+	}
+};
+
+const currentFiltering = (state = { symbol: null, num: null }, action) => {
+	switch (action.type) {
+		case "SET_DATASET":
+			return { symbol: null, num: null };
+		case "CLEAR_AXIS":
+			return state;
+		case "SET_FILTERING":
+			return {
+				...state,
+				...action.payload
+			};
 		default:
 			return state;
 	}
@@ -203,6 +219,7 @@ const rootReducer = combineReducers({
 	manipulation: currentManipulation,
 	graphSelection: currentGraphSuggestions,
 	finalChoice: currentGraphChoice,
-	style: currentStyle
+	style: currentStyle,
+	filtering: currentFiltering
 });
 export default rootReducer;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import rootActions from "../../actions/rootActions";
 import { useDispatch } from "react-redux";
-import { DropdownButton, Card, Button, Dropdown } from "react-bootstrap";
+import { Card, Button } from "react-bootstrap";
 
 function GraphCard(props) {
 	const dispatch = useDispatch();
@@ -141,7 +141,6 @@ function GraphCard(props) {
 		);
 	}, [props.x, props.y]);
 
-	let manipulationArr = ["SUM", "AVG", "MAX", "MIN", "STD"];
 	return (
 		<div
 			style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}
@@ -159,7 +158,6 @@ function GraphCard(props) {
 							}}
 							key={type}
 						>
-							{/* <Card.Img variant="top" src={`graphsType/${props.type}`} /> */}
 							<Card.Body>
 								<Card.Title>{`${type.toUpperCase()}`}</Card.Title>
 								<Card.Text>{`${cardDescription[type].desc}`}</Card.Text>
@@ -171,22 +169,6 @@ function GraphCard(props) {
 								>
 									Generate
 								</Button>
-								{type === "bar" ? (
-									<DropdownButton title={manipulation ? manipulation : "SUM"}>
-										{manipulationArr.map((ele) => {
-											return (
-												<Dropdown.Item
-													onClick={() => {
-														dispatch(rootActions.setManipulation(`${ele}`));
-													}}
-													key={`${ele}`}
-												>
-													{ele}
-												</Dropdown.Item>
-											);
-										})}
-									</DropdownButton>
-								) : null}
 							</Card.Body>
 						</Card>
 					);
