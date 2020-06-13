@@ -27,7 +27,8 @@ function Plot({ ...props }) {
 		scatterStyle,
 		heatmapStyle,
 		theme,
-		filtering
+		filtering,
+		groupBy
 	} = props;
 
 	const { width, height, top, right, bottom, left } = basicStyle;
@@ -104,34 +105,27 @@ function Plot({ ...props }) {
 		return resultArr;
 	};
 
-	const handleLineData = (inputX, inputY, data, filtering) => {
+	const handleLineData = (inputX, inputY, data, manipulation, filtering) => {
 		let resultArr = [];
 		let dataCopy = data.slice();
 		let xname = inputX.name;
 		let yname = inputY.name;
 		dataCopy = dataCopy.filter(
 			(ele) =>
-				ele[yname].length !== 0 && detectDatatype(ele[yname]) === "number"
+				ele[xname].length !== 0 &&
+				ele[yname].length !== 0 &&
+				detectDatatype(ele[yname]) === "number"
 		);
-
 		if (filtering.symbol && filtering.num) {
 			dataCopy = dataCopy.filter((ele) => {
 				return eval(`${ele[yname]}${filtering.symbol}${filtering.num}`);
 			});
 		}
 		for (let i = 0; i < dataCopy.length; i++) {
-			if (
-				dataCopy[i][xname] === "" ||
-				dataCopy[i][yname] === "" ||
-				detectDatatype(dataCopy[i][yname]) === "string"
-			) {
-				continue;
-			} else {
-				resultArr.push({
-					x: dataCopy[i][xname],
-					y: Number(dataCopy[i][yname])
-				});
-			}
+			resultArr.push({
+				x: dataCopy[i][xname],
+				y: Number(dataCopy[i][yname])
+			});
 		}
 		return [{ id: yname, data: resultArr }];
 	};

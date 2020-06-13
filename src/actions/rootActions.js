@@ -22,6 +22,9 @@ const rootActions = {
 	},
 	setStyle: (payload) => {
 		return { type: "SET_STYLE", payload };
+	},
+	setGroupBy: (payload) => {
+		return { type: "SET_GROUP_BY", payload };
 	}
 };
 

@@ -15,6 +15,7 @@ function Inputpage() {
 	const manipulation = useSelector((state) => state.manipulation);
 	const style = useSelector((state) => state.style);
 	const filtering = useSelector((state) => state.filtering);
+	const groupBy = useSelector((state) => state.groupBy);
 	return (
 		<Container fluid>
 			<Row>
@@ -42,15 +43,36 @@ function Inputpage() {
 						<Customize finalChoice={finalChoice} myStyle={style}></Customize>
 					) : null}
 					{activeKey === "analysis" && finalChoice === null ? (
-						<div>No plot available yet...</div>
+						<div
+							style={{
+								textAlign: "center",
+								paddingTop: "30px",
+								paddingBottom: "30px"
+							}}
+						>
+							No data available yet...
+						</div>
 					) : null}
-					{activeKey === "manipulation" ? (
+					{activeKey === "manipulation" && finalChoice ? (
 						<Manipulation
 							finalChoice={finalChoice}
 							manipulation={manipulation}
 							axis={axis}
 							filtering={filtering}
+							groupBy={groupBy}
+							jsonData={jsonData}
 						></Manipulation>
+					) : null}
+					{activeKey === "manipulation" && finalChoice === null ? (
+						<div
+							style={{
+								textAlign: "center",
+								paddingTop: "30px",
+								paddingBottom: "30px"
+							}}
+						>
+							No data available yet...
+						</div>
 					) : null}
 				</Col>
 				<Col
@@ -70,6 +92,7 @@ function Inputpage() {
 							jsonData={jsonData}
 							myStyle={style}
 							filtering={filtering}
+							groupBy={groupBy}
 						></ChooseGraph>
 					) : null}
 				</Col>

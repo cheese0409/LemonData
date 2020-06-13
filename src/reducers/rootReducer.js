@@ -66,6 +66,18 @@ const currentFiltering = (state = { symbol: null, num: null }, action) => {
 			return state;
 	}
 };
+const currentGroupBy = (state = "", action) => {
+	switch (action.type) {
+		case "SET_DATASET":
+			return "";
+		case "CLEAR_AXIS":
+			return state;
+		case "SET_GROUP_BY":
+			return action.payload;
+		default:
+			return state;
+	}
+};
 
 const currentGraphSuggestions = (
 	state = {
@@ -110,7 +122,7 @@ const currentGraphChoice = (state = null, action) => {
 const currentStyle = (
 	state = {
 		basicStyle: {
-			width: 800,
+			width: 900,
 			height: 600,
 			enableLabel: true,
 			labelTextColor: "#000000",
@@ -118,7 +130,7 @@ const currentStyle = (
 			enableGridY: true,
 			top: 60,
 			bottom: 60,
-			left: 60,
+			left: 100,
 			right: 60
 		},
 		barStyle: {
@@ -220,6 +232,7 @@ const rootReducer = combineReducers({
 	graphSelection: currentGraphSuggestions,
 	finalChoice: currentGraphChoice,
 	style: currentStyle,
-	filtering: currentFiltering
+	filtering: currentFiltering,
+	groupBy: currentGroupBy
 });
 export default rootReducer;

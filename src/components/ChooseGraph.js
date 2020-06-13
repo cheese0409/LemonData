@@ -5,6 +5,7 @@ import rootActions from "../actions/rootActions";
 import { Button } from "react-bootstrap";
 import GraphCard from "./partials/GraphCard";
 import Plot from "./Plot";
+const saveSvgAsPng = require("save-svg-as-png");
 
 function ChooseGraph({
 	axis,
@@ -12,7 +13,8 @@ function ChooseGraph({
 	finalChoice,
 	myStyle,
 	jsonData,
-	filtering
+	filtering,
+	groupBy
 }) {
 	const dispatch = useDispatch();
 	return (
@@ -69,26 +71,47 @@ function ChooseGraph({
 						alignItems: "center"
 					}}
 				>
-					<Button
-						onClick={() => {
-							dispatch(rootActions.clearAxis());
-						}}
-						variant="outline-primary"
-					>
-						Back
-					</Button>
-
+					<div style={{ display: "flex" }}>
+						<Button
+							onClick={() => {
+								dispatch(rootActions.clearAxis());
+							}}
+							variant="outline-primary"
+							style={{ margin: "0 20px" }}
+						>
+							Back
+						</Button>
+						<Button
+							style={{ margin: "0 20px" }}
+							onClick={() => {
+								saveSvgAsPng.saveSvgAsPng(
+									document.querySelectorAll("#myplot svg")[0],
+									"untitle.png",
+									{
+										scale: 1,
+										encoderOptions: 1,
+										background: "white"
+									}
+								);
+							}}
+							variant="primary"
+						>
+							Download
+						</Button>
+					</div>
 					<div
 						style={{
 							width: "800px",
 							height: "600px"
 						}}
+						id="myplot"
 					>
 						<Plot
 							dataset={jsonData}
 							finalChoice={finalChoice}
 							manipulation={manipulation}
 							axis={axis}
+							groupBy={groupBy}
 							filtering={filtering}
 							{...myStyle}
 							axisBottom={{

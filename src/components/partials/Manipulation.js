@@ -29,15 +29,39 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-function Manipulation({ finalChoice, manipulation, axis, filtering }) {
+function Manipulation({
+	finalChoice,
+	manipulation,
+	axis,
+	filtering,
+	groupBy,
+	jsonData
+}) {
 	const classes = useStyles();
-	let manipulationArr = ["SUM", "AVG", "MAX", "MIN", "STD"];
-	let filterArr = ["=", ">", "<", "<=", ">="];
 	const dispatch = useDispatch();
-	const [filteringOptions, setFilteringOptions] = useState({
+	const manipulationArr = ["SUM", "AVG", "MAX", "MIN", "STD"];
+	let filterArr = [">", ">=", "<", "<="];
+	const [filteringOption, setFilteringOption] = useState({
 		symbol: "",
-		num: null
+		num: ""
 	});
+	const [groupByOption, setGroupByOption] = useState("");
+	const detectDatatype = (val) => {
+		if (!isNaN(val)) {
+			return "number";
+		} else if (typeof val === "string") {
+			return "string";
+		}
+	};
+	let groupByArr = [];
+	if (jsonData.length !== 0) {
+		for (let prop in jsonData[0]) {
+			if (detectDatatype(jsonData[0][prop]) === "string") {
+				groupByArr.push(prop);
+			}
+		}
+	}
+
 	return (
 		<div>
 			<Accordion defaultActiveKey="manipulation">
@@ -88,10 +112,10 @@ function Manipulation({ finalChoice, manipulation, axis, filtering }) {
 												<Select
 													labelId="filter-select"
 													id="filter-select"
-													value={filteringOptions.symbol}
+													value={filteringOption.symbol}
 													onChange={(event) => {
-														setFilteringOptions({
-															...filteringOptions,
+														setFilteringOption({
+															...filteringOption,
 															symbol: event.target.value
 														});
 													}}
@@ -108,20 +132,85 @@ function Manipulation({ finalChoice, manipulation, axis, filtering }) {
 													type="text"
 													placeholder="Enter number..."
 													onChange={(event) => {
-														setFilteringOptions({
-															...filteringOptions,
+														setFilteringOption({
+															...filteringOption,
 															num: event.target.value
 														});
 													}}
+													value={filteringOption.num}
 												/>
 											</div>
-											<div
+											<div>
+												<Button
+													onClick={() => {
+														dispatch(rootActions.setFiltering(filteringOption));
+													}}
+												>
+													Apply
+												</Button>
+
+												<Button
+													variant="outline-secondary"
+													onClick={() => {
+														setFilteringOption({
+															...filteringOption,
+															symbol: "",
+															num: ""
+														});
+														dispatch(
+															rootActions.setFiltering({
+																symbol: null,
+																num: null
+															})
+														);
+													}}
+												>
+													Clear
+												</Button>
+											</div>
+										</div>
+									</ListGroup.Item>
+								) : null}
+								{(finalChoice === "bar" ||
+									finalChoice === "line" ||
+									finalChoice === "scatter") &&
+								groupByArr.length !== 0 ? (
+									<ListGroup.Item className={classes.listGroup}>
+										<div className={classes.label}>Group By:</div>
+										<Select
+											labelId="bar-manipulation-select"
+											id="bar-manipulation-select"
+											value={groupByOption}
+											onChange={(event) => {
+												setGroupByOption(event.target.value);
+											}}
+										>
+											{groupByArr.map((ele) => {
+												return (
+													<MenuItem value={ele} key={ele}>
+														{ele}
+													</MenuItem>
+												);
+											})}
+										</Select>
+										<div>
+											<Button
 												onClick={() => {
-													dispatch(rootActions.setFiltering(filteringOptions));
+													dispatch(rootActions.setGroupBy(groupByOption));
 												}}
 											>
-												<Button>Apply</Button>
-											</div>
+												Apply
+											</Button>
+
+											<Button
+												variant="outline-secondary"
+												onClick={() => {
+													setGroupByOption("");
+													dispatch(rootActions.setGroupBy(null));
+												}}
+											>
+												Clear
+											</Button>
 										</div>
 									</ListGroup.Item>
 								) : null}
