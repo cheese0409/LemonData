@@ -1,145 +1,88 @@
 import React from "react";
 import { Dustbin } from "./dnd/Dustbin";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import rootActions from "../actions/rootActions";
-import { DropdownButton, Dropdown, Button } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import GraphCard from "./partials/GraphCard";
 import Plot from "./Plot";
-function ChooseGraph(props) {
+
+function ChooseGraph({ axis, manipulation, finalChoice, myStyle, jsonData }) {
 	const dispatch = useDispatch();
-	const { axis, manipulation, finalChoice } = props;
-	const jsonData = useSelector((state) => state.dataset.jsonData);
-
-	// const filterAccept = (finalChoice) => {
-	// 	let acceptObject = {};
-	// 	if (finalChoice === "bar" || finalChoice === "line") {
-	// 		acceptObject.x = ["string", "number"];
-	// 		acceptObject.y = ["number"];
-	// 	} else if (finalChoice === "pie") {
-	// 		acceptObject.x = ["string"];
-	// 		acceptObject.y = ["number"];
-	// 	} else if (finalChoice === "scatter") {
-	// 		acceptObject.x = ["number"];
-	// 		acceptObject.y = ["number"];
-	// 	} else if (finalChoice === "heatmap" && axis.X.type === "string") {
-	// 		acceptObject.x = ["string"];
-	// 		acceptObject.y = ["string"];
-	// 	} else if (finalChoice === "heatmap" && axis.X.type === "number") {
-	// 		acceptObject.x = ["number"];
-	// 		acceptObject.y = ["number"];
-	// 	} else {
-	// 		acceptObject.x = ["number", "string"];
-	// 		acceptObject.y = ["number", "string"];
-	// 	}
-	// 	return acceptObject;
-	// };
-
 	return (
 		<div>
 			{finalChoice ? null : (
-				<div>
-					<h3>Please select your dimensions</h3>
-					<div style={{ display: "flex" }}>
+				<div style={{ margin: "1em" }}>
+					<h5 style={{ textAlign: "center" }}>Please select your dimensions</h5>
+					<div style={{ display: "flex", justifyContent: "center" }}>
 						<div>
-							{`X Axis: `}
 							<Dustbin
+								title="X Axis"
 								lastDroppedItem={axis.X}
 								onDrop={(item) => {
 									dispatch(rootActions.setAxis({ X: item }));
 								}}
 								axis={axis}
 								key="X"
+								handleClear={() => {
+									dispatch(rootActions.setAxis({ X: null }));
+								}}
 							/>
 						</div>
 						<div>
-							{`Y Axis: `}
 							<Dustbin
+								title="Y Axis"
 								lastDroppedItem={axis.Y}
 								onDrop={(item) => {
 									dispatch(rootActions.setAxis({ Y: item }));
 								}}
 								axis={axis}
 								key="Y"
+								handleClear={() => {
+									dispatch(rootActions.setAxis({ Y: null }));
+								}}
 							/>
 						</div>
-
-						{axis.X &&
-						axis.Y &&
-						axis.X.type === "string" &&
-						axis.Y.type === "number" ? (
-							<DropdownButton title={manipulation ? manipulation : "SUM"}>
-								<Dropdown.Item
-									onClick={() => {
-										dispatch(rootActions.setManipulation("SUM"));
-									}}
-									key="sum"
-								>
-									SUM
-								</Dropdown.Item>
-								<Dropdown.Item
-									onClick={() => {
-										dispatch(rootActions.setManipulation("AVG"));
-									}}
-									key="avg"
-								>
-									AVG
-								</Dropdown.Item>
-								<Dropdown.Item
-									onClick={() => {
-										dispatch(rootActions.setManipulation("MAX"));
-									}}
-									key="max"
-								>
-									MAX
-								</Dropdown.Item>
-								<Dropdown.Item
-									onClick={() => {
-										dispatch(rootActions.setManipulation("MIN"));
-									}}
-									key="min"
-								>
-									MIN
-								</Dropdown.Item>
-								<Dropdown.Item
-									onClick={() => {
-										dispatch(rootActions.setManipulation("STD"));
-									}}
-									key="std"
-								>
-									STD
-								</Dropdown.Item>
-							</DropdownButton>
-						) : null}
 					</div>
 				</div>
 			)}
 
-			<div style={{ display: "flex" }}>
-				{!finalChoice && (axis.X || axis.Y) ? (
-					<GraphCard x={axis.X} y={axis.Y}></GraphCard>
-				) : null}
-			</div>
+			{!finalChoice && (axis.X || axis.Y) ? (
+				<GraphCard
+					x={axis.X}
+					y={axis.Y}
+					manipulation={manipulation}
+				></GraphCard>
+			) : null}
 
 			{finalChoice ? (
-				<div>
+				<div
+					style={{
+						display: "flex",
+						flexDirection: "column",
+						alignItems: "center"
+					}}
+				>
 					<Button
 						onClick={() => {
 							dispatch(rootActions.clearAxis());
 						}}
 						variant="outline-primary"
 					>
-						Clear
+						Back
 					</Button>
 
-					<div style={{ height: "720px", width: "1080px" }}>
+					<div
+						style={{
+							width: "800px",
+							height: "600px"
+						}}
+					>
 						<Plot
 							dataset={jsonData}
 							finalChoice={finalChoice}
 							manipulation={manipulation}
 							axis={axis}
-							width={1080}
-							height={720}
-							margin={{ top: 60, right: 140, bottom: 70, left: 90 }}
+							{...myStyle}
 							axisBottom={{
 								orient: "bottom",
 								tickSize: 0,

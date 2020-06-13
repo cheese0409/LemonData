@@ -1,7 +1,6 @@
 import { Button, Spinner, Row, Col } from "react-bootstrap";
 import React from "react";
 import axios from "axios";
-import Blob from "blob";
 import FormData from "form-data";
 import Files from "../utils/index";
 import "../utils/uploader.css";
@@ -118,6 +117,7 @@ class Uploader extends React.Component {
 												<img
 													className="files-list-item-preview-image"
 													src={file.preview.url}
+													alt={file.id}
 												/>
 											) : (
 												<div className="files-list-item-preview-extension">

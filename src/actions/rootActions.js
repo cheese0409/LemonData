@@ -16,6 +16,9 @@ const rootActions = {
 	},
 	setFinalGraphType: (payload) => {
 		return { type: "SET_FINAL_GRAPH_TYPE", payload };
+	},
+	setStyle: (payload) => {
+		return { type: "SET_STYLE", payload };
 	}
 };
 

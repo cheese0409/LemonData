@@ -14,16 +14,28 @@ const detectDatatype = (val) => {
 	}
 };
 
-function Plot(props) {
+function Plot({ ...props }) {
 	const {
 		axis,
-		margin,
-		width,
-		height,
 		finalChoice,
 		dataset,
-		manipulation
+		manipulation,
+		basicStyle,
+		barStyle,
+		lineStyle,
+		pieStyle,
+		scatterStyle,
+		heatmapStyle,
+		theme
 	} = props;
+
+	const { width, height, top, right, bottom, left } = basicStyle;
+	const margin = {
+		top,
+		right,
+		left,
+		bottom
+	};
 
 	const handleScatterData = (inputX, inputY, data) => {
 		let resultArr = [];
@@ -44,8 +56,6 @@ function Plot(props) {
 				});
 			}
 		}
-		console.log("Scatter DATA");
-		console.log(resultArr);
 		return [{ id: yname, data: resultArr }];
 	};
 
@@ -80,12 +90,6 @@ function Plot(props) {
 		return resultArr;
 	};
 
-	function getRandomIntInclusive(min, max) {
-		min = Math.ceil(min);
-		max = Math.floor(max);
-		return Math.floor(Math.random() * (max - min + 1)) + min; //含最大值，含最小值
-	}
-
 	const handleLineData = (inputX, inputY, data) => {
 		let resultArr = [];
 		let xname = inputX.name;
@@ -104,7 +108,6 @@ function Plot(props) {
 				});
 			}
 		}
-		console.log(resultArr);
 		return [{ id: yname, data: resultArr }];
 	};
 
@@ -143,8 +146,6 @@ function Plot(props) {
 			for (let i = 0; i < data.length; i++) {
 				resultObj[data[i][name]]++;
 			}
-			console.log("BAR DATA");
-			console.log(resultObj);
 			for (let prop in resultObj) {
 				resultArr.push({ [name]: prop, value: resultObj[prop] });
 			}
@@ -249,20 +250,6 @@ function Plot(props) {
 		}
 	};
 
-	// const generateColorsRange = (x, y) => {
-	// 	let sum = x.count.length * y.count.length;
-	// 	let arr = [];
-	// 	for (let i = 0; i < sum; i++) {
-	// 		arr.push(
-	// 			`rgb(${getRandomIntInclusive(0, 255)}, ${getRandomIntInclusive(
-	// 				0,
-	// 				255
-	// 			)}, ${getRandomIntInclusive(0, 255)})`
-	// 		);
-	// 	}
-	// 	return arr;
-	// };
-
 	switch (finalChoice) {
 		case "bar":
 			return (
@@ -271,8 +258,17 @@ function Plot(props) {
 					indexBy={axis.X.name}
 					keys={["value"]}
 					margin={margin}
+					theme={theme}
 					width={width}
 					height={height}
+					enableLabel={basicStyle.enableLabel}
+					labelTextColor={basicStyle.labelTextColor}
+					enableGridX={basicStyle.enableGridX}
+					enableGridY={basicStyle.enableGridY}
+					padding={barStyle.padding}
+					borderRadius={barStyle.borderRadius}
+					borderColor={barStyle.borderColor}
+					borderWidth={barStyle.borderWidth}
 					axisBottom={{ ...props.axisBottom, legend: `${axis.X.name}` }}
 					axisLeft={{
 						...props.axisLeft,
@@ -289,7 +285,8 @@ function Plot(props) {
 					margin={margin}
 					width={width}
 					height={height}
-					colors={{ scheme: "nivo" }}
+					enableLabels={basicStyle.enableLabel}
+					labelTextColor={basicStyle.labelTextColor}
 					axisBottom={{
 						...props.axisBottom,
 						legend: `${axis.X.name}`,
@@ -305,15 +302,20 @@ function Plot(props) {
 					data={handleHeatmapData(axis.X, axis.Y, dataset)}
 					indexBy={axis.Y.name}
 					keys={axis.X.count}
+					theme={theme}
 					margin={margin}
 					width={width}
 					height={height}
-					padding={2}
+					enableGridX={basicStyle.enableGridX}
+					enableGridY={basicStyle.enableGridY}
+					enableLabels={basicStyle.enableLabel}
+					labelTextColor={basicStyle.labelTextColor}
+					forceSquare={heatmapStyle.forceSquare}
+					sizeVariation={heatmapStyle.sizeVariation}
+					padding={heatmapStyle.padding}
+					colors={heatmapStyle.colors}
 					axisRight={null}
 					axisTop={null}
-					colors="PRGn"
-					enableLabels={true}
-					labelTextColor={{ from: "color", modifiers: [["darker", 2]] }}
 					axisBottom={{
 						...props.axisBottom,
 						legend: `${axis.X.name}`,
@@ -338,6 +340,9 @@ function Plot(props) {
 					margin={margin}
 					width={width}
 					height={height}
+					enableRadialLabels={basicStyle.enableLabel}
+					radialLabelsTextColor={basicStyle.labelTextColor}
+					theme={theme}
 				></Pie>
 			);
 		case "scatter":
@@ -347,6 +352,9 @@ function Plot(props) {
 					margin={margin}
 					width={width}
 					height={height}
+					enableLabels={basicStyle.enableLabel}
+					labelTextColor={basicStyle.labelTextColor}
+					theme={theme}
 					xScale={{
 						type: "linear",
 						min: "auto",

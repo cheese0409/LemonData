@@ -1,10 +1,10 @@
 import React from "react";
 import { Accordion, Card, Button } from "react-bootstrap";
-import Measure from "./Measure";
-import LoaddataBtn from "./LoaddataBtn";
+import Measure from "../Measure";
+import LoaddataBtn from "../LoaddataBtn";
 import { useSelector } from "react-redux";
 
-function Sidebar() {
+function Data() {
 	const { name, rowData, jsonData } = useSelector((state) => state.dataset);
 	return (
 		<>
@@ -53,4 +53,4 @@ function Sidebar() {
 		</>
 	);
 }
-export default Sidebar;
+export default Data;

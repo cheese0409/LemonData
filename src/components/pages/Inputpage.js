@@ -1,15 +1,19 @@
 import React, { useState } from "react";
 import { Container, Nav, Row, Col } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import Sidebar from "../Sidebar";
+import Data from "../partials/Data";
 import ChooseGraph from "../ChooseGraph";
+import Customize from "../partials/Customize";
+import Manipulation from "../partials/Manipulation";
 
 function Inputpage() {
 	const [activeKey, handleSelect] = useState("data");
 	const axis = useSelector((state) => state.axis);
 	const dataname = useSelector((state) => state.dataset.name);
+	const jsonData = useSelector((state) => state.dataset.jsonData);
 	const finalChoice = useSelector((state) => state.finalChoice);
 	const manipulation = useSelector((state) => state.manipulation);
+	const style = useSelector((state) => state.style);
 	return (
 		<Container fluid>
 			<Row>
@@ -23,21 +27,40 @@ function Inputpage() {
 						}}
 					>
 						<Nav.Item>
-							<Nav.Link eventKey="data">Data</Nav.Link>
+							<Nav.Link eventKey="data">Import</Nav.Link>
 						</Nav.Item>
 						<Nav.Item>
-							<Nav.Link eventKey="analysis">Analysis</Nav.Link>
+							<Nav.Link eventKey="analysis">Customise</Nav.Link>
+						</Nav.Item>
+						<Nav.Item>
+							<Nav.Link eventKey="manipulation">Manipulation</Nav.Link>
 						</Nav.Item>
 					</Nav>
-					{activeKey === "data" ? <Sidebar></Sidebar> : null}
-					{activeKey === "analysis" ? <div>Analysis</div> : null}
+					{activeKey === "data" ? <Data></Data> : null}
+					{activeKey === "analysis" && finalChoice ? (
+						<Customize finalChoice={finalChoice} myStyle={style}></Customize>
+					) : null}
+					{activeKey === "analysis" && finalChoice === null ? (
+						<div>No plot available yet...</div>
+					) : null}
+					{activeKey === "manipulation" ? <Manipulation></Manipulation> : null}
 				</Col>
-				<Col lg={9} md={8} sm={6}>
+				<Col
+					lg={9}
+					md={8}
+					sm={6}
+					style={{
+						position: "fixed",
+						left: "25%"
+					}}
+				>
 					{dataname ? (
 						<ChooseGraph
 							axis={axis}
 							manipulation={manipulation}
 							finalChoice={finalChoice}
+							jsonData={jsonData}
+							myStyle={style}
 						></ChooseGraph>
 					) : null}
 				</Col>

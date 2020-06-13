@@ -13,7 +13,7 @@ export const Box = ({ name, icon, type, count }) => {
 			isDragging: monitor.isDragging()
 		})
 	});
-	const background = isDragging ? "pink" : "white";
+	const background = isDragging ? "#ffe091" : "white";
 	return (
 		<div ref={drag} style={{ ...style, background }}>
 			{icon}
