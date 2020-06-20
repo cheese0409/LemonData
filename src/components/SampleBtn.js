@@ -26,7 +26,7 @@ function SampleBtn(props) {
 	const handleClick = () => setLoading(true);
 
 	const fetchSampleData = (filename) => {
-		return axios.get(`http://localhost:3001/api/file/${filename}`);
+		return axios.get(`/api/file/${filename}`);
 	};
 
 	return (

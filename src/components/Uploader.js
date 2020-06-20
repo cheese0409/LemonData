@@ -43,7 +43,7 @@ class Uploader extends React.Component {
 
 		this.setState({ isLoading: true });
 		axios
-			.post(`http://localhost:3001/api/upload`, formData)
+			.post(`/api/upload`, formData)
 			.then((res) => {
 				const value = {
 					name: this.state.files[0].name,
