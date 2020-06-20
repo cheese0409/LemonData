@@ -50,7 +50,7 @@ function Inputpage() {
 								paddingBottom: "30px"
 							}}
 						>
-							No data available yet...
+							No graph available yet...
 						</div>
 					) : null}
 					{activeKey === "manipulation" && finalChoice ? (
@@ -71,7 +71,7 @@ function Inputpage() {
 								paddingBottom: "30px"
 							}}
 						>
-							No data available yet...
+							No graph available yet...
 						</div>
 					) : null}
 				</Col>

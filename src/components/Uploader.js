@@ -94,26 +94,29 @@ class Uploader extends React.Component {
 					>
 						Drop files here or click to upload
 					</Files>
-					<Button
-						variant="success"
-						onClick={this.filesUpload}
-						style={{ width: "150px", marginTop: "20px" }}
-					>
-						{this.state.isLoading ? (
-							<div>
-								<Spinner
-									as="span"
-									animation="grow"
-									size="sm"
-									role="status"
-									aria-hidden="true"
-								/>
-								Loading...
-							</div>
-						) : (
-							<span>Upload</span>
-						)}
-					</Button>
+					{this.state.files.length === 0 ? null : (
+						<Button
+							variant="success"
+							onClick={this.filesUpload}
+							style={{ width: "150px", marginTop: "20px" }}
+						>
+							{this.state.isLoading ? (
+								<div>
+									<Spinner
+										as="span"
+										animation="grow"
+										size="sm"
+										role="status"
+										aria-hidden="true"
+									/>
+									Loading...
+								</div>
+							) : (
+								<span>Upload</span>
+							)}
+						</Button>
+					)}
+
 					{this.state.files.length > 0 ? (
 						<div className="files-list">
 							<ul>

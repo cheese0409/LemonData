@@ -31,7 +31,7 @@ function SampleBtn(props) {
 
 	return (
 		<Button
-			style={{ margin: "10px 5px" }}
+			style={{ margin: "10px 4px" }}
 			variant="outline-dark"
 			disabled={isLoading}
 			onClick={!isLoading ? handleClick : null}

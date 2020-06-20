@@ -16,27 +16,32 @@ function GraphCard(props) {
 
 	const cardDescription = {
 		bar: {
-			img: "",
+			img: "/graphsType/single_bar_chart.png",
+			name: "Bar Chart",
 			desc:
 				"A bar chart or bar graph is a chart or graph that presents grouped data with rectangular bars with heights proportional to the values that they represent."
 		},
 		pie: {
-			img: "",
+			img: "/graphsType/pie_chart.png",
+			name: "Pie Chart",
 			desc:
 				"A pie chart (or a circle chart) is a circular statistical graphic which is divided into slices to illustrate numerical proportion."
 		},
 		line: {
-			img: "",
+			img: "/graphsType/line_chart.png",
+			name: "Line Chart",
 			desc:
 				"A line chart is a graphical representation of an asset's historical price action that connects a series of data points with a continuous line."
 		},
 		heatmap: {
-			img: "",
+			img: "/graphsType/Heatmap.png",
+			name: "Heatmap",
 			desc:
 				"A heatmap is a graphical representation of data that uses a system of color-coding to represent different values."
 		},
 		scatter: {
-			img: "",
+			img: "/graphsType/scatter_plot.png",
+			name: "Scatter Plot",
 			desc:
 				"A scatter plot (also called a scatterplot, scatter graph, scatter chart, scattergram, or scatter diagram) is a type of plot or mathematical diagram using Cartesian coordinates to display values for typically two variables for a set of data."
 		}
@@ -151,15 +156,22 @@ function GraphCard(props) {
 						<Card
 							className="text-center"
 							style={{
-								width: "18rem",
+								width: "20rem",
 								borderRadius: "0",
 								boxShadow: "5px 5px 10px rgba(0,0,0,0.2)",
 								margin: "0 10px"
 							}}
 							key={type}
 						>
+							<Card.Img
+								style={{ width: "100%", height: "150px", objectFit: "cover" }}
+								variant="top"
+								src={cardDescription[type].img}
+							/>
 							<Card.Body>
-								<Card.Title>{`${type.toUpperCase()}`}</Card.Title>
+								<Card.Title>{`${cardDescription[
+									type
+								].name.toUpperCase()}`}</Card.Title>
 								<Card.Text>{`${cardDescription[type].desc}`}</Card.Text>
 								<Button
 									variant="primary"

@@ -1,5 +1,12 @@
 import React from "react";
-import { Accordion, Card, Button, ListGroup } from "react-bootstrap";
+import {
+	Accordion,
+	Card,
+	Button,
+	ListGroup,
+	OverlayTrigger,
+	Popover
+} from "react-bootstrap";
 import rootAction from "../../actions/rootActions";
 import { useDispatch } from "react-redux";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
@@ -659,14 +666,59 @@ function Customize({ finalChoice, myStyle }) {
 		});
 	};
 
+	const popover1 = (
+		<Popover id="popover-basic">
+			<Popover.Title as="h3">Tips</Popover.Title>
+			<Popover.Content>
+				Lemon Data provides 7 sample data sets for you to explore. You can
+				upload your own data set from your local computer as well. Currently, it
+				only supports <strong>csv</strong> format. Lemon Data treats the first
+				row as the name row by default. So please make sure your data set
+				<strong> includes the name row</strong>.
+			</Popover.Content>
+		</Popover>
+	);
+	const popover2 = (
+		<Popover id="popover-basic">
+			<Popover.Title as="h3">Tips</Popover.Title>
+			<Popover.Content>
+				Lemon Data provides 7 sample data sets for you to explore. You can
+				upload your own data set from your local computer as well. Currently, it
+				only supports <strong>csv</strong> format. Lemon Data treats the first
+				row as the name row by default. So please make sure your data set
+				<strong> includes the name row</strong>.
+			</Popover.Content>
+		</Popover>
+	);
+
 	return (
 		<div>
 			<Accordion defaultActiveKey="basicStyle">
 				<Card>
-					<Card.Header>
+					<Card.Header style={{ paddingRight: "0px" }}>
 						<Accordion.Toggle as={Button} variant="link" eventKey="basicStyle">
-							Basic Styles
+							<i className="far fa-minus-square"></i>
 						</Accordion.Toggle>
+						Basic Styles
+						<span
+							style={{
+								float: "right",
+								marginRight: "15px",
+								dispatch: "inline-block",
+								verticalAlign: "center"
+							}}
+						>
+							<OverlayTrigger
+								trigger="click"
+								placement="right"
+								overlay={popover1}
+							>
+								<i
+									className="fas fa-question-circle"
+									style={{ fontSize: "1.3em", color: "#f3c03f" }}
+								></i>
+							</OverlayTrigger>
+						</span>
 					</Card.Header>
 					<Accordion.Collapse eventKey="basicStyle">
 						<Card.Body style={{ padding: 0 }}>
@@ -677,35 +729,39 @@ function Customize({ finalChoice, myStyle }) {
 			</Accordion>
 			<Accordion defaultActiveKey={`${finalChoice}Styles`}>
 				<Card>
-					<Card.Header>
+					<Card.Header style={{ paddingRight: "0px" }}>
 						<Accordion.Toggle
 							as={Button}
 							variant="link"
 							eventKey={`${finalChoice}Styles`}
 						>
-							{`${finalChoice.toUpperCase()}`} Styles
+							<i className="far fa-minus-square"></i>
 						</Accordion.Toggle>
+						{`${finalChoice.toUpperCase()}`} Styles
+						<span
+							style={{
+								float: "right",
+								marginRight: "15px",
+								dispatch: "inline-block",
+								verticalAlign: "center"
+							}}
+						>
+							<OverlayTrigger
+								trigger="click"
+								placement="right"
+								overlay={popover2}
+							>
+								<i
+									className="fas fa-question-circle"
+									style={{ fontSize: "1.3em", color: "#f3c03f" }}
+								></i>
+							</OverlayTrigger>
+						</span>
 					</Card.Header>
 					<Accordion.Collapse eventKey={`${finalChoice}Styles`}>
 						<Card.Body style={{ padding: 0 }}>
 							<ListGroup variant="flush">{renderStyles(finalChoice)}</ListGroup>
 						</Card.Body>
-					</Accordion.Collapse>
-				</Card>
-			</Accordion>
-			<Accordion defaultActiveKey="manipulation">
-				<Card>
-					<Card.Header>
-						<Accordion.Toggle
-							as={Button}
-							variant="link"
-							eventKey="manipulation"
-						>
-							Data Manipulation
-						</Accordion.Toggle>
-					</Card.Header>
-					<Accordion.Collapse eventKey="manipulation">
-						<Card.Body>No fields yet...</Card.Body>
 					</Accordion.Collapse>
 				</Card>
 			</Accordion>

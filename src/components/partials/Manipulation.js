@@ -4,14 +4,15 @@ import {
 	Card,
 	Button,
 	ListGroup,
-	DropdownButton,
-	Dropdown,
+	OverlayTrigger,
+	Popover,
 	Form
 } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import rootActions from "../../actions/rootActions";
-import { withStyles, makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import Select from "@material-ui/core/Select";
+
 import MenuItem from "@material-ui/core/MenuItem";
 
 const useStyles = makeStyles((theme) => ({
@@ -45,7 +46,7 @@ function Manipulation({
 		symbol: "",
 		num: ""
 	});
-	const [groupByOption, setGroupByOption] = useState("");
+	const [groupByOption, setGroupByOption] = useState("Categorical name");
 	const detectDatatype = (val) => {
 		if (!isNaN(val)) {
 			return "number";
@@ -61,19 +62,52 @@ function Manipulation({
 			}
 		}
 	}
-
+	const popover = (
+		<Popover id="popover-basic">
+			<Popover.Title as="h3">Tips</Popover.Title>
+			<Popover.Content>
+				<strong>Filtering:</strong> The numerical values can be filtered based
+				on the filtering rules you add. Multiple filtering rules can be added
+				when clicked the "+" sign.<br></br>
+				<strong>Calculation:</strong> The calculation you want to perform when
+				aggregate the data by the class label.
+				<strong>Group By:</strong> The third classification dimension can be
+				added if you want.
+			</Popover.Content>
+		</Popover>
+	);
 	return (
 		<div>
 			<Accordion defaultActiveKey="manipulation">
 				<Card>
-					<Card.Header>
+					<Card.Header style={{ paddingRight: "0px" }}>
 						<Accordion.Toggle
 							as={Button}
 							variant="link"
 							eventKey="manipulation"
 						>
-							Data manipulation
+							<i className="far fa-minus-square"></i>
 						</Accordion.Toggle>
+						Data manipulation
+						<span
+							style={{
+								float: "right",
+								marginRight: "15px",
+								dispatch: "inline-block",
+								verticalAlign: "center"
+							}}
+						>
+							<OverlayTrigger
+								trigger="click"
+								placement="right"
+								overlay={popover}
+							>
+								<i
+									className="fas fa-question-circle"
+									style={{ fontSize: "1.3em", color: "#f3c03f" }}
+								></i>
+							</OverlayTrigger>
+						</span>
 					</Card.Header>
 					<Accordion.Collapse eventKey="manipulation">
 						<Card.Body style={{ padding: 0 }}>
@@ -81,25 +115,29 @@ function Manipulation({
 								{finalChoice === "bar" && axis.Y ? (
 									<ListGroup.Item className={classes.listGroup}>
 										<div className={classes.root}>
-											<div className={classes.label}>Y values calculation:</div>
-											<Select
-												labelId="bar-manipulation-select"
-												id="bar-manipulation-select"
-												value={manipulation}
-												onChange={(event) => {
-													dispatch(
-														rootActions.setManipulation(event.target.value)
-													);
-												}}
-											>
-												{manipulationArr.map((ele) => {
-													return (
-														<MenuItem value={ele} key={ele}>
-															{ele}
-														</MenuItem>
-													);
-												})}
-											</Select>
+											<div className={classes.label}>
+												<span style={{ marginRight: "20px" }}>
+													Y values calculation:
+												</span>
+												<Select
+													labelId="bar-manipulation-select"
+													id="bar-manipulation-select"
+													value={manipulation}
+													onChange={(event) => {
+														dispatch(
+															rootActions.setManipulation(event.target.value)
+														);
+													}}
+												>
+													{manipulationArr.map((ele) => {
+														return (
+															<MenuItem value={ele} key={ele}>
+																{ele}
+															</MenuItem>
+														);
+													})}
+												</Select>
+											</div>
 										</div>
 									</ListGroup.Item>
 								) : null}
@@ -108,40 +146,60 @@ function Manipulation({
 										<div className={classes.root}>
 											<div className={classes.label}>Filtering:</div>
 											<div>
-												<div>All Y values </div>
-												<Select
-													labelId="filter-select"
-													id="filter-select"
-													value={filteringOption.symbol}
-													onChange={(event) => {
-														setFilteringOption({
-															...filteringOption,
-															symbol: event.target.value
-														});
+												<div
+													style={{
+														display: "flex",
+														justifyContent: "center",
+														alignItems: "center"
 													}}
 												>
-													{filterArr.map((ele) => {
-														return (
-															<MenuItem value={ele} key={ele}>
-																{ele}
-															</MenuItem>
-														);
-													})}
-												</Select>
-												<Form.Control
-													type="text"
-													placeholder="Enter number..."
-													onChange={(event) => {
-														setFilteringOption({
-															...filteringOption,
-															num: event.target.value
-														});
-													}}
-													value={filteringOption.num}
-												/>
+													<span style={{ marginRight: "20px" }}>
+														All Y values
+													</span>
+													<Select
+														labelId="filter-select"
+														id="filter-select"
+														value={filteringOption.symbol}
+														onChange={(event) => {
+															setFilteringOption({
+																...filteringOption,
+																symbol: event.target.value
+															});
+														}}
+														style={{ marginRight: "20px" }}
+													>
+														{filterArr.map((ele) => {
+															return (
+																<MenuItem value={ele} key={ele}>
+																	{ele}
+																</MenuItem>
+															);
+														})}
+													</Select>
+													<Form.Control
+														style={{ width: "100px" }}
+														type="text"
+														placeholder="Num"
+														onChange={(event) => {
+															setFilteringOption({
+																...filteringOption,
+																num: event.target.value
+															});
+														}}
+														value={filteringOption.num}
+													/>
+												</div>
 											</div>
-											<div>
+											<div
+												style={{
+													marginTop: "20px",
+													display: "flex",
+													justifyContent: "center"
+												}}
+											>
 												<Button
+													style={{ margin: "0 10px" }}
+													size="sm"
 													onClick={() => {
 														dispatch(rootActions.setFiltering(filteringOption));
 													}}
@@ -150,6 +208,8 @@ function Manipulation({
 												</Button>
 
 												<Button
+													style={{ margin: "0 10px" }}
+													size="sm"
 													variant="outline-secondary"
 													onClick={() => {
 														setFilteringOption({
@@ -176,25 +236,35 @@ function Manipulation({
 									finalChoice === "scatter") &&
 								groupByArr.length !== 0 ? (
 									<ListGroup.Item className={classes.listGroup}>
-										<div className={classes.label}>Group By:</div>
-										<Select
-											labelId="bar-manipulation-select"
-											id="bar-manipulation-select"
-											value={groupByOption}
-											onChange={(event) => {
-												setGroupByOption(event.target.value);
+										<div className={classes.label}>
+											<span style={{ marginRight: "20px" }}>Group By:</span>
+											<Select
+												labelId="bar-manipulation-select"
+												id="bar-manipulation-select"
+												value={groupByOption}
+												onChange={(event) => {
+													setGroupByOption(event.target.value);
+												}}
+											>
+												{groupByArr.map((ele) => {
+													return (
+														<MenuItem value={ele} key={ele}>
+															{ele}
+														</MenuItem>
+													);
+												})}
+											</Select>
+										</div>
+										<div
+											style={{
+												marginTop: "20px",
+												display: "flex",
+												justifyContent: "center"
 											}}
 										>
-											{groupByArr.map((ele) => {
-												return (
-													<MenuItem value={ele} key={ele}>
-														{ele}
-													</MenuItem>
-												);
-											})}
-										</Select>
-										<div>
 											<Button
+												style={{ margin: "0 10px" }}
+												size="sm"
 												onClick={() => {
 													dispatch(rootActions.setGroupBy(groupByOption));
 												}}
@@ -203,9 +273,11 @@ function Manipulation({
 											</Button>
 
 											<Button
+												style={{ margin: "0 10px" }}
+												size="sm"
 												variant="outline-secondary"
 												onClick={() => {
-													setGroupByOption("");
+													setGroupByOption("Categorical name");
 													dispatch(rootActions.setGroupBy(null));
 												}}
 											>
