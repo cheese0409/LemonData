@@ -2,6 +2,13 @@ const router = require("express").Router();
 const { toCSVRow, toJSON } = require("./util");
 var multer = require("multer");
 var path = require("path");
+var fs = require("fs");
+var dir = "./.uploads";
+
+if (!fs.existsSync(dir)) {
+	fs.mkdirSync(dir);
+}
+
 var storage = multer.diskStorage({
 	destination: function (req, file, cb) {
 		cb(null, `${__dirname}/.uploads/`);
@@ -51,6 +58,7 @@ router.post("/upload", upload.any(), async (req, res, next) => {
 	if (!req.files) {
 		return next(new Error("No files uploaded"));
 	}
+
 	req.files.forEach(async (file) => {
 		rowData = await toCSVRow(`${file.path}`);
 		jsonData = await toJSON(`${file.path}`);

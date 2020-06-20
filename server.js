@@ -9,6 +9,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
 app.use(express.static("files"));
+
 app.use("/api", routes);
 
 // if (process.env.NODE_ENV === "production") {
