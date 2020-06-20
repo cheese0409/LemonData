@@ -10,6 +10,13 @@ app.use(cors());
 app.use(express.static("files"));
 app.use("/api", routes);
 
-app.listen(3001, () => {
-    console.log("Listening on port 3001");
+if (process.env.NODE_ENV === "production") {
+	app.use(express.static("../build/"));
+	app.get("*", (req, res) => {
+		res.sendFile(path.resolve(__dirname, "build", "index.html"));
+	});
+}
+
+app.listen(process.env.PORT || 3001, () => {
+	console.log("Listening on port 3001");
 });
