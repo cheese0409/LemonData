@@ -163,20 +163,51 @@ function Plot({ ...props }) {
 		if (inputY === null) {
 			let dataCopy = data.slice();
 			let resultArr = [];
-			let name = inputX.name;
-			let labels = inputX.count;
-			let resultObj = {};
-			resultObj = labels.reduce((acc, curr) => {
-				acc[curr] = 0;
-				return acc;
-			}, {});
-			for (let i = 0; i < dataCopy.length; i++) {
-				resultObj[dataCopy[i][name]]++;
+			let xname = inputX.name;
+			let xlabels = inputX.count;
+			if (groupBy.length !== 0) {
+				let tempSet = new Set();
+				for (let i = 0; i < dataCopy.length; i++) {
+					tempSet.add(dataCopy[i][groupBy]);
+				}
+				let legends = Array.from(tempSet);
+
+				let resultObj = xlabels.reduce((acc, curr) => {
+					acc[curr] = legends.reduce((lengendsAcc, legendsCurr) => {
+						lengendsAcc[legendsCurr] = [];
+						return lengendsAcc;
+					}, {});
+					return acc;
+				}, {});
+
+				for (let i = 0; i < dataCopy.length; i++) {
+					let xprop = dataCopy[i][xname];
+					let legend = dataCopy[i][groupBy];
+					resultObj[xprop][legend]++;
+				}
+
+				for (let prop in resultObj) {
+					resultArr.push({ [xname]: prop, ...resultObj[prop] });
+				}
+				return resultArr;
+			} else {
+				let resultObj = xlabels.reduce((acc, curr) => {
+					acc[curr] = 0;
+					return acc;
+				}, {});
+
+				for (let i = 0; i < dataCopy.length; i++) {
+					if (dataCopy[i][xname].length === 0) {
+						continue;
+					}
+					resultObj[dataCopy[i][xname]]++;
+				}
+
+				for (let prop in resultObj) {
+					resultArr.push({ [xname]: prop, value: resultObj[prop] });
+				}
+				return resultArr;
 			}
-			for (let prop in resultObj) {
-				resultArr.push({ [name]: prop, value: resultObj[prop] });
-			}
-			return resultArr;
 		} else if (inputY && manipulation) {
 			let dataCopy = data.slice();
 			let resultArr = [];
