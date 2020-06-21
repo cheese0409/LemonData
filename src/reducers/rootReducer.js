@@ -42,6 +42,8 @@ const currentManipulation = (state = "AVG", action) => {
 	switch (action.type) {
 		case "SET_DATASET":
 			return "AVG";
+		case "SET_AXIS":
+			return "AVG";
 		case "CLEAR_AXIS":
 			return state;
 		case "SET_MANIPULATION":
@@ -54,6 +56,8 @@ const currentManipulation = (state = "AVG", action) => {
 const currentFiltering = (state = { symbol: null, num: null }, action) => {
 	switch (action.type) {
 		case "SET_DATASET":
+			return { symbol: null, num: null };
+		case "SET_AXIS":
 			return { symbol: null, num: null };
 		case "CLEAR_AXIS":
 			return state;
@@ -69,6 +73,8 @@ const currentFiltering = (state = { symbol: null, num: null }, action) => {
 const currentGroupBy = (state = "", action) => {
 	switch (action.type) {
 		case "SET_DATASET":
+			return "";
+		case "SET_AXIS":
 			return "";
 		case "CLEAR_AXIS":
 			return state;
@@ -131,11 +137,13 @@ const currentStyle = (
 			top: 60,
 			bottom: 60,
 			left: 100,
-			right: 60
+			right: 100
 		},
 		barStyle: {
 			borderColor: "#bbbbbb",
 			padding: 0.1,
+			colors: "nivo",
+			groupMode: "grouped",
 			borderRadius: 0,
 			borderWidth: 0
 		},

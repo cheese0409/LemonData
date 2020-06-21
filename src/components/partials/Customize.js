@@ -493,6 +493,75 @@ function Customize({ finalChoice, myStyle }) {
 			</div>
 		);
 	};
+
+	const barGroupModeComponent = () => {
+		const groupArray = ["grouped", "stacked"];
+		return (
+			<div className={classes.root}>
+				<div className={classes.label}>Group Mode:</div>
+				<Select
+					labelId="bar-group-mode-select"
+					id="bar-group-mode-select"
+					value={barStyle.groupMode}
+					onChange={(event) => {
+						dispatch(
+							rootAction.setStyle({
+								barStyle: {
+									groupMode: event.target.value
+								}
+							})
+						);
+					}}
+				>
+					{groupArray.map((ele) => {
+						return (
+							<MenuItem value={ele} key={ele}>
+								{ele}
+							</MenuItem>
+						);
+					})}
+				</Select>
+			</div>
+		);
+	};
+	const barColorsComponent = () => {
+		const colorsArray = [
+			"nivo",
+			"category10",
+			"accent",
+			"dark2",
+			"paired",
+			"set1"
+		];
+		return (
+			<div className={classes.root}>
+				<div className={classes.label}>Colors:</div>
+				<Select
+					labelId="bar-colors-select"
+					id="bar-colors-select"
+					value={barStyle.colors}
+					onChange={(event) => {
+						dispatch(
+							rootAction.setStyle({
+								barStyle: {
+									colors: event.target.value
+								}
+							})
+						);
+					}}
+				>
+					{colorsArray.map((ele) => {
+						return (
+							<MenuItem value={ele} key={ele}>
+								{ele}
+							</MenuItem>
+						);
+					})}
+				</Select>
+			</div>
+		);
+	};
+
 	// HEATMAP
 	const heatmapForceSquareComponent = () => {
 		return (
@@ -623,6 +692,8 @@ function Customize({ finalChoice, myStyle }) {
 				margin: marginComponent
 			},
 			bar: {
+				colors: barColorsComponent,
+				groupMode: barGroupModeComponent,
 				enableLabel: enableLabelComponent,
 				enableGridX: enableGridXComponent,
 				enableGridY: enableGridYComponent,

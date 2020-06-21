@@ -152,7 +152,14 @@ function Plot({ ...props }) {
 		return resultArr;
 	};
 
-	const handleBarData = (inputX, inputY, data, manipulation, filtering) => {
+	const handleBarData = (
+		inputX,
+		inputY,
+		data,
+		manipulation,
+		filtering,
+		groupBy
+	) => {
 		if (inputY === null) {
 			let dataCopy = data.slice();
 			let resultArr = [];
@@ -175,7 +182,6 @@ function Plot({ ...props }) {
 			let resultArr = [];
 			let xname = inputX.name;
 			let yname = inputY.name;
-			let resultObj = {};
 
 			// remove y values which are not number
 			dataCopy = dataCopy.filter(
@@ -196,105 +202,247 @@ function Plot({ ...props }) {
 				set.add(dataCopy[i][xname]);
 			}
 			let xlabels = Array.from(set);
-			resultObj = xlabels.reduce((acc, curr) => {
-				acc[curr] = [];
-				return acc;
-			}, {});
 
-			for (let i = 0; i < dataCopy.length; i++) {
-				let xprop = dataCopy[i][xname];
-				resultObj[xprop].push(Number(dataCopy[i][yname]));
-			}
+			if (groupBy.length === 0) {
+				let resultObj = xlabels.reduce((acc, curr) => {
+					acc[curr] = [];
+					return acc;
+				}, {});
 
-			if (manipulation === "SUM") {
-				let temp = { ...resultObj };
-				for (let prop in temp) {
-					temp[prop] = temp[prop].reduce((acc, cur) => {
-						return acc + cur;
-					});
+				for (let i = 0; i < dataCopy.length; i++) {
+					let xprop = dataCopy[i][xname];
+					resultObj[xprop].push(Number(dataCopy[i][yname]));
 				}
-				for (let prop in temp) {
-					resultArr.push({
-						[xname]: prop,
-						value: Math.round(temp[prop] * 100) / 100
-					});
-				}
-				return resultArr;
-			} else if (manipulation === "AVG") {
-				let temp = { ...resultObj };
-				for (let prop in temp) {
-					temp[prop] =
-						temp[prop].reduce((acc, cur) => {
+
+				if (manipulation === "SUM") {
+					let temp = { ...resultObj };
+					for (let prop in temp) {
+						temp[prop] = temp[prop].reduce((acc, cur) => {
 							return acc + cur;
-						}) / temp[prop].length;
+						});
+					}
+					for (let prop in temp) {
+						resultArr.push({
+							[xname]: prop,
+							value: Math.round(temp[prop] * 100) / 100
+						});
+					}
+					return resultArr;
+				} else if (manipulation === "AVG") {
+					let temp = { ...resultObj };
+					for (let prop in temp) {
+						temp[prop] =
+							temp[prop].reduce((acc, cur) => {
+								return acc + cur;
+							}) / temp[prop].length;
+					}
+					for (let prop in temp) {
+						resultArr.push({
+							[xname]: prop,
+							value: Math.round(temp[prop] * 100) / 100
+						});
+					}
+					return resultArr;
+				} else if (manipulation === "MAX") {
+					let temp = { ...resultObj };
+					for (let prop in temp) {
+						temp[prop] = Math.max(...temp[prop]);
+					}
+					for (let prop in temp) {
+						resultArr.push({
+							[xname]: prop,
+							value: Math.round(temp[prop] * 100) / 100
+						});
+					}
+					return resultArr;
+				} else if (manipulation === "MIN") {
+					let temp = { ...resultObj };
+					for (let prop in temp) {
+						temp[prop] = Math.min(...temp[prop]);
+					}
+					for (let prop in temp) {
+						resultArr.push({
+							[xname]: prop,
+							value: Math.round(temp[prop] * 100) / 100
+						});
+					}
+					return resultArr;
+				} else if (manipulation === "STD") {
+					let temp = { ...resultObj };
+					for (let prop in temp) {
+						let mean =
+							temp[prop].reduce((acc, cur) => {
+								return acc + cur;
+							}) / temp[prop].length;
+						let deviations = temp[prop].map((x) => x - mean);
+						let stddev = Math.sqrt(
+							deviations.map((x) => x * x).reduce((x, y) => x + y) /
+								(data.length - 1)
+						);
+						temp[prop] = stddev;
+					}
+					for (let prop in temp) {
+						resultArr.push({
+							[xname]: prop,
+							value: Math.round(temp[prop] * 100) / 100
+						});
+					}
+					return resultArr;
 				}
-				for (let prop in temp) {
-					resultArr.push({
-						[xname]: prop,
-						value: Math.round(temp[prop] * 100) / 100
-					});
+			} else {
+				let tempSet = new Set();
+				for (let i = 0; i < dataCopy.length; i++) {
+					tempSet.add(dataCopy[i][groupBy]);
 				}
-				return resultArr;
-			} else if (manipulation === "MAX") {
-				let temp = { ...resultObj };
-				for (let prop in temp) {
-					temp[prop] = Math.max(...temp[prop]);
+				let legends = Array.from(tempSet);
+
+				let resultObj = xlabels.reduce((acc, curr) => {
+					acc[curr] = legends.reduce((lengendsAcc, legendsCurr) => {
+						lengendsAcc[legendsCurr] = [];
+						return lengendsAcc;
+					}, {});
+					return acc;
+				}, {});
+
+				for (let i = 0; i < dataCopy.length; i++) {
+					let xprop = dataCopy[i][xname];
+					let legend = dataCopy[i][groupBy];
+					resultObj[xprop][legend].push(Number(dataCopy[i][yname]));
 				}
-				for (let prop in temp) {
-					resultArr.push({
-						[xname]: prop,
-						value: Math.round(temp[prop] * 100) / 100
-					});
+
+				if (manipulation === "SUM") {
+					let temp = { ...resultObj };
+					for (let prop in temp) {
+						for (let prop2 in temp[prop]) {
+							temp[prop][prop2] = temp[prop][prop2].reduce((acc, cur) => {
+								return Math.round((acc + cur) * 100) / 100;
+							});
+						}
+					}
+					for (let prop in temp) {
+						resultArr.push({
+							[xname]: prop,
+							...temp[prop]
+						});
+					}
+					return resultArr;
+				} else if (manipulation === "AVG") {
+					let temp = { ...resultObj };
+					for (let prop in temp) {
+						for (let prop2 in temp[prop]) {
+							temp[prop][prop2] =
+								Math.round(
+									(temp[prop][prop2].reduce((acc, cur) => {
+										return acc + cur;
+									}) /
+										temp[prop][prop2].length) *
+										100
+								) / 100;
+						}
+					}
+					console.log(temp);
+					for (let prop in temp) {
+						resultArr.push({
+							[xname]: prop,
+							...temp[prop]
+						});
+					}
+					return resultArr;
+				} else if (manipulation === "MAX") {
+					let temp = { ...resultObj };
+					for (let prop in temp) {
+						for (let prop2 in temp[prop]) {
+							temp[prop][prop2] =
+								Math.round(Math.max(...temp[prop][prop2]) * 100) / 100;
+						}
+					}
+					for (let prop in temp) {
+						resultArr.push({
+							[xname]: prop,
+							...temp[prop]
+						});
+					}
+					return resultArr;
+				} else if (manipulation === "MIN") {
+					let temp = { ...resultObj };
+					for (let prop in temp) {
+						for (let prop2 in temp[prop]) {
+							temp[prop][prop2] =
+								Math.round(100 * Math.min(...temp[prop][prop2])) / 100;
+						}
+					}
+					for (let prop in temp) {
+						resultArr.push({
+							[xname]: prop,
+							...temp[prop]
+						});
+					}
+					return resultArr;
+				} else if (manipulation === "STD") {
+					let temp = { ...resultObj };
+					for (let prop in temp) {
+						for (let prop2 in temp[prop]) {
+							let mean =
+								temp[prop][prop2].reduce((acc, cur) => {
+									return acc + cur;
+								}) / temp[prop][prop2].length;
+							let deviations = temp[prop][prop2].map((x) => x - mean);
+							let stddev = Math.sqrt(
+								deviations.map((x) => x * x).reduce((x, y) => x + y) /
+									(data.length - 1)
+							);
+							temp[prop][prop2] = Math.round(stddev * 100) / 100;
+						}
+					}
+					for (let prop in temp) {
+						resultArr.push({
+							[xname]: prop,
+							...temp[prop]
+						});
+					}
+					return resultArr;
 				}
-				return resultArr;
-			} else if (manipulation === "MIN") {
-				let temp = { ...resultObj };
-				for (let prop in temp) {
-					temp[prop] = Math.min(...temp[prop]);
-				}
-				for (let prop in temp) {
-					resultArr.push({
-						[xname]: prop,
-						value: Math.round(temp[prop] * 100) / 100
-					});
-				}
-				return resultArr;
-			} else if (manipulation === "STD") {
-				let temp = { ...resultObj };
-				for (let prop in temp) {
-					let mean =
-						temp[prop].reduce((acc, cur) => {
-							return acc + cur;
-						}) / temp[prop].length;
-					let deviations = temp[prop].map((x) => x - mean);
-					let stddev = Math.sqrt(
-						deviations.map((x) => x * x).reduce((x, y) => x + y) /
-							(data.length - 1)
-					);
-					temp[prop] = stddev;
-				}
-				for (let prop in temp) {
-					resultArr.push({
-						[xname]: prop,
-						value: Math.round(temp[prop] * 100) / 100
-					});
-				}
-				return resultArr;
 			}
 		}
 	};
 
+	const handleKeys = (data, groupBy) => {
+		let dataCopy = data.slice();
+		let tempSet = new Set();
+		for (let i = 0; i < dataCopy.length; i++) {
+			tempSet.add(dataCopy[i][groupBy]);
+		}
+		let legends = Array.from(tempSet);
+		return legends;
+	};
+
 	switch (finalChoice) {
 		case "bar":
+			let legends;
+			if (groupBy.length !== 0) {
+				legends = handleKeys(dataset, groupBy);
+			} else {
+				legends = ["value"];
+			}
 			return (
 				<Bar
-					data={handleBarData(axis.X, axis.Y, dataset, manipulation, filtering)}
+					data={handleBarData(
+						axis.X,
+						axis.Y,
+						dataset,
+						manipulation,
+						filtering,
+						groupBy,
+						legends
+					)}
 					indexBy={axis.X.name}
-					keys={["value"]}
+					keys={legends}
 					margin={margin}
 					theme={theme}
 					width={width}
+					groupMode={barStyle.groupMode}
 					height={height}
+					colors={{ scheme: barStyle.colors }}
 					enableLabel={basicStyle.enableLabel}
 					labelTextColor={basicStyle.labelTextColor}
 					enableGridX={basicStyle.enableGridX}
@@ -304,6 +452,22 @@ function Plot({ ...props }) {
 					borderColor={barStyle.borderColor}
 					borderWidth={barStyle.borderWidth}
 					axisBottom={{ ...props.axisBottom, legend: `${axis.X.name}` }}
+					legends={[
+						{
+							dataFrom: "keys",
+							anchor: "bottom-right",
+							direction: "column",
+							justify: false,
+							translateX: 120,
+							translateY: -56,
+							itemsSpacing: 10,
+							itemWidth: 96,
+							itemHeight: 10,
+							itemDirection: "left-to-right",
+							itemOpacity: 0.85,
+							symbolSize: 13
+						}
+					]}
 					axisLeft={{
 						...props.axisLeft,
 						legend: axis.Y
